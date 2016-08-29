@@ -3,6 +3,7 @@ package com.pcdn.model.github
 import java.io.PrintWriter
 
 import com.github.rjeschke.txtmark._
+import com.pcdn.model.utils.Settings
 import com.pcdn.model.utils.httpClient.HttpClient
 import spray.http.{HttpHeader, HttpResponse}
 import spray.json.{JsValue, JsonParser}
@@ -12,12 +13,12 @@ import scala.language.implicitConversions
 
 object GithubBot {
 
+
   def apply(username: String, token: String, repo: String) = {
     new GithubBot(username, token, repo)
   }
 
-  class GithubBot(val username: String, val token: String, val repo: String) {
-    val datadir = "/Users/Hung/ScalaProjects/scalaBlog/data/"
+  class GithubBot(val username: String, val token: String, val repo: String) extends Settings {
     private final val url = "https://api.github.com/repos"
     private final val commitsUrl = "%s/%s/commits?path=_posts".format(url, repo)
     val client = new HttpClient(username, token)
@@ -55,15 +56,14 @@ object GithubBot {
     }
 
     def write_file(filename: String)(httpResponse: HttpResponse): Unit = {
-      val abspath = "%s/%s".format(datadir, filename)
+      val abspath = "%s/%s".format(dataDir, filename)
       httpResponse.status.intValue match {
-        case 200 => {
+        case 200 =>
           println("Download file: " + abspath)
           new PrintWriter(abspath) {
             write(httpResponse.entity.asString)
             close()
           }
-        }
         case _ =>
       }
     }
@@ -92,14 +92,12 @@ object GithubBot {
       println(url)
       client.process(url)(parsePaging)
     }
-
   }
 
   def main(args: Array[String]): Unit = {
     val bot = GithubBot("whatvn", "2c8fd5e1d6de179e2651613f9753e1b2e132f305", "vnsecurity/vnsecurity.github.io")
     bot.retrievePaging()
   }
-
 }
 
 

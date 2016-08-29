@@ -53,7 +53,7 @@ class ServiceImplement extends Actor with Routes {
   val router: Route = logRequest(showPath _ ) (
     routes.values.tail.foldLeft(routes.head._2)((x, y) => x ~ y)
   )
-  def receive = {
+  def receive: Receive = {
     runRoute(router ~ static)
   }
 }
