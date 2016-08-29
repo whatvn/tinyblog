@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="ivy-report.xsl"?>
+<ivy-report version="1.0">
+	<info
+		organisation="default"
+		module="scalablog-build"
+		revision="0.1-SNAPSHOT"
+		extra-scalaVersion="2.10"
+		extra-sbtVersion="0.13"
+		conf="test"
+		confs="compile, runtime, test, provided, optional, compile-internal, runtime-internal, test-internal, plugin, sources, docs, pom, scala-tool"
+		date="20160816090314"/>
+	<dependencies>
+		<module organisation="org.scala-lang" name="scala-compiler">
+			<revision name="2.10.4" status="release" pubdate="20140319044738" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" downloaded="false" searched="false" default="false" conf="master(*), compile, runtime(*), runtime, compile(*), master" position="2">
+				<license name="BSD-like" url="http://www.scala-lang.org/downloads/license.html    "/>
+				<metadata-artifact status="no" details="" size="2809" time="0" location="/Users/Hung/.ivy2/cache/org.scala-lang/scala-compiler/ivy-2.10.4.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.10.4/scala-compiler-2.10.4.pom"/>
+				<caller organisation="com.typesafe.play" name="twirl-compiler_2.10" conf="default, compile, runtime, master" rev="2.10.4" rev-constraint-default="2.10.4" rev-constraint-dynamic="2.10.5" callerrev="1.1.1"/>
+				<artifacts>
+					<artifact name="scala-compiler" type="jar" ext="jar" status="no" details="" size="14445780" time="0" location="/Users/Hung/.ivy2/cache/org.scala-lang/scala-compiler/jars/scala-compiler-2.10.4.jar">
+						<origin-location is-local="false" location="https://repo1.maven.org/maven2/org/scala-lang/scala-compiler/2.10.4/scala-compiler-2.10.4.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.scala-lang" name="scala-reflect">
+			<revision name="2.10.4" status="release" pubdate="20140319044707" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" extra-info.apiURL="http://www.scala-lang.org/api/2.10.4/" downloaded="false" searched="false" default="false" conf="master(*), compile, runtime(*), runtime, compile(*), master" position="4">
+				<license name="BSD-like" url="http://www.scala-lang.org/downloads/license.html    "/>
+				<metadata-artifact status="no" details="" size="2647" time="0" location="/Users/Hung/.ivy2/cache/org.scala-lang/scala-reflect/ivy-2.10.4.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scala-lang/scala-reflect/2.10.4/scala-reflect-2.10.4.pom"/>
+				<caller organisation="org.scala-lang" name="scala-compiler" conf="compile, runtime" rev="2.10.4" rev-constraint-default="2.10.4" rev-constraint-dynamic="2.10.4" callerrev="2.10.4"/>
+				<artifacts>
+					<artifact name="scala-reflect" type="jar" ext="jar" status="no" details="" size="3203471" time="0" location="/Users/Hung/.ivy2/cache/org.scala-lang/scala-reflect/jars/scala-reflect-2.10.4.jar">
+						<origin-location is-local="false" location="UNKNOWN"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="com.typesafe.sbt" name="sbt-twirl">
+			<revision name="1.1.1" status="release" pubdate="20150514150137" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/playframework/twirl" extra-scalaVersion="2.10" extra-sbtVersion="0.13" downloaded="false" searched="false" default="false" conf="compile, default(compile)" position="0">
+				<license name="Apache-2.0" url="http://www.apache.org/licenses/LICENSE-2.0.html"/>
+				<metadata-artifact status="no" details="" size="2331" time="0" location="/Users/Hung/.ivy2/cache/scala_2.10/sbt_0.13/com.typesafe.sbt/sbt-twirl/ivy-1.1.1.xml" searched="false" origin-is-local="false" origin-location="http://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.typesafe.sbt/sbt-twirl/scala_2.10/sbt_0.13/1.1.1/ivys/ivy.xml"/>
+				<caller organisation="default" name="scalablog-build" conf="test, compile, runtime" rev="1.1.1" rev-constraint-default="1.1.1" rev-constraint-dynamic="1.1.1" callerrev="0.1-SNAPSHOT" extra-scalaVersion="2.10" extra-sbtVersion="0.13"/>
+				<artifacts>
+					<artifact name="sbt-twirl" type="jar" ext="jar" status="no" details="" size="80636" time="0" location="/Users/Hung/.ivy2/cache/scala_2.10/sbt_0.13/com.typesafe.sbt/sbt-twirl/jars/sbt-twirl-1.1.1.jar">
+						<origin-location is-local="false" location="http://repo.scala-sbt.org/scalasbt/sbt-plugin-releases/com.typesafe.sbt/sbt-twirl/scala_2.10/sbt_0.13/1.1.1/jars/sbt-twirl.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="com.typesafe.play" name="twirl-compiler_2.10">
+			<revision name="1.1.1" status="release" pubdate="20150514120129" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/playframework/twirl" downloaded="false" searched="false" default="false" conf="default, compile, runtime, default(compile), master" position="1">
+				<license name="Apache-2.0" url="http://www.apache.org/licenses/LICENSE-2.0.html"/>
+				<metadata-artifact status="no" details="" size="2979" time="0" location="/Users/Hung/.ivy2/cache/com.typesafe.play/twirl-compiler_2.10/ivy-1.1.1.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/com/typesafe/play/twirl-compiler_2.10/1.1.1/twirl-compiler_2.10-1.1.1.pom"/>
+				<caller organisation="com.typesafe.sbt" name="sbt-twirl" conf="compile" rev="1.1.1" rev-constraint-default="1.1.1" rev-constraint-dynamic="1.1.1" callerrev="1.1.1"/>
+				<artifacts>
+					<artifact name="twirl-compiler_2.10" type="jar" ext="jar" status="no" details="" size="112093" time="0" location="/Users/Hung/.ivy2/cache/com.typesafe.play/twirl-compiler_2.10/jars/twirl-compiler_2.10-1.1.1.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/com/typesafe/play/twirl-compiler_2.10/1.1.1/twirl-compiler_2.10-1.1.1.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="com.typesafe.play" name="twirl-parser_2.10">
+			<revision name="1.1.1" status="release" pubdate="20150514120119" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/playframework/twirl" downloaded="false" searched="false" default="false" conf="master(*), compile, runtime(*), runtime, compile(*), master" position="7">
+				<license name="Apache-2.0" url="http://www.apache.org/licenses/LICENSE-2.0.html"/>
+				<metadata-artifact status="no" details="" size="3006" time="0" location="/Users/Hung/.ivy2/cache/com.typesafe.play/twirl-parser_2.10/ivy-1.1.1.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/com/typesafe/play/twirl-parser_2.10/1.1.1/twirl-parser_2.10-1.1.1.pom"/>
+				<caller organisation="com.typesafe.play" name="twirl-compiler_2.10" conf="default, compile, runtime, master" rev="1.1.1" rev-constraint-default="1.1.1" rev-constraint-dynamic="1.1.1" callerrev="1.1.1"/>
+				<artifacts>
+					<artifact name="twirl-parser_2.10" type="jar" ext="jar" status="no" details="" size="298829" time="0" location="/Users/Hung/.ivy2/cache/com.typesafe.play/twirl-parser_2.10/jars/twirl-parser_2.10-1.1.1.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/com/typesafe/play/twirl-parser_2.10/1.1.1/twirl-parser_2.10-1.1.1.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="com.typesafe.play" name="twirl-api_2.10">
+			<revision name="1.1.1" status="release" pubdate="20150514120104" resolver="sbt-chain" artresolver="sbt-chain" homepage="https://github.com/playframework/twirl" downloaded="false" searched="false" default="false" conf="master(*), compile, runtime(*), runtime, compile(*), master" position="5">
+				<license name="Apache-2.0" url="http://www.apache.org/licenses/LICENSE-2.0.html"/>
+				<metadata-artifact status="no" details="" size="3139" time="0" location="/Users/Hung/.ivy2/cache/com.typesafe.play/twirl-api_2.10/ivy-1.1.1.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/com/typesafe/play/twirl-api_2.10/1.1.1/twirl-api_2.10-1.1.1.pom"/>
+				<caller organisation="com.typesafe.play" name="twirl-compiler_2.10" conf="default, compile, runtime, master" rev="1.1.1" rev-constraint-default="1.1.1" rev-constraint-dynamic="1.1.1" callerrev="1.1.1"/>
+				<artifacts>
+					<artifact name="twirl-api_2.10" type="jar" ext="jar" status="no" details="" size="60633" time="0" location="/Users/Hung/.ivy2/cache/com.typesafe.play/twirl-api_2.10/jars/twirl-api_2.10-1.1.1.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/com/typesafe/play/twirl-api_2.10/1.1.1/twirl-api_2.10-1.1.1.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.apache.commons" name="commons-lang3">
+			<revision name="3.4" status="release" pubdate="20150403193112" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://commons.apache.org/proper/commons-lang/" downloaded="false" searched="false" default="false" conf="master(*), compile, runtime(*), runtime, compile(*), master" position="6">
+				<metadata-artifact status="no" details="" size="11421" time="0" location="/Users/Hung/.ivy2/cache/org.apache.commons/commons-lang3/ivy-3.4.xml" searched="false" origin-is-local="false" origin-location="http://repo1.maven.org/maven2/org/apache/commons/commons-lang3/3.4/commons-lang3-3.4.pom"/>
+				<caller organisation="com.typesafe.play" name="twirl-api_2.10" conf="compile, runtime" rev="3.4" rev-constraint-default="3.4" rev-constraint-dynamic="3.4" callerrev="1.1.1"/>
+				<artifacts>
+					<artifact name="commons-lang3" type="jar" ext="jar" status="no" details="" size="434678" time="0" location="/Users/Hung/.ivy2/cache/org.apache.commons/commons-lang3/jars/commons-lang3-3.4.jar">
+						<origin-location is-local="false" location="http://repo1.maven.org/maven2/org/apache/commons/commons-lang3/3.4/commons-lang3-3.4.jar"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+		<module organisation="org.scala-lang" name="scala-library">
+			<revision name="2.10.4" status="release" pubdate="20140319044629" resolver="sbt-chain" artresolver="sbt-chain" homepage="http://www.scala-lang.org/" extra-info.apiURL="http://www.scala-lang.org/api/2.10.4/" downloaded="false" searched="false" default="false" conf="master(*), compile, runtime(*), runtime, compile(*), master" position="3">
+				<license name="BSD-like" url="http://www.scala-lang.org/downloads/license.html          "/>
+				<metadata-artifact status="no" details="" size="2487" time="0" location="/Users/Hung/.ivy2/cache/org.scala-lang/scala-library/ivy-2.10.4.xml" searched="false" origin-is-local="false" origin-location="https://repo1.maven.org/maven2/org/scala-lang/scala-library/2.10.4/scala-library-2.10.4.pom"/>
+				<caller organisation="com.typesafe.play" name="twirl-compiler_2.10" conf="default, compile, runtime, master" rev="2.10.4" rev-constraint-default="2.10.4" rev-constraint-dynamic="2.10.5" callerrev="1.1.1"/>
+				<caller organisation="org.scala-lang" name="scala-compiler" conf="compile, runtime" rev="2.10.4" rev-constraint-default="2.10.4" rev-constraint-dynamic="2.10.4" callerrev="2.10.4"/>
+				<caller organisation="com.typesafe.play" name="twirl-api_2.10" conf="compile, runtime" rev="2.10.4" rev-constraint-default="2.10.4" rev-constraint-dynamic="2.10.5" callerrev="1.1.1"/>
+				<caller organisation="org.scala-lang" name="scala-reflect" conf="compile, runtime" rev="2.10.4" rev-constraint-default="2.10.4" rev-constraint-dynamic="2.10.4" callerrev="2.10.4"/>
+				<caller organisation="com.typesafe.play" name="twirl-parser_2.10" conf="compile, runtime" rev="2.10.4" rev-constraint-default="2.10.4" rev-constraint-dynamic="2.10.5" callerrev="1.1.1"/>
+				<artifacts>
+					<artifact name="scala-library" type="jar" ext="jar" status="no" details="" size="7126372" time="0" location="/Users/Hung/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-2.10.4.jar">
+						<origin-location is-local="false" location="UNKNOWN"/>
+					</artifact>
+				</artifacts>
+			</revision>
+		</module>
+	</dependencies>
+</ivy-report>

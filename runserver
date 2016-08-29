@@ -1,0 +1,75 @@
+#!/bin/sh
+export APPNAME=BLOGS
+export HOME="/Users/Hung/ScalaProjects/scalaBlog"
+cd $HOME
+export JMXHOST=127.0.0.1
+export JMXPORT=1465
+export PORT=1464
+export APPENV=development
+export XMS=128m
+export CONF=conf
+export JARFILE="$HOME/out/artifacts/scalaBlog_jar/scalaBlog.jar"
+pid_file=tmp/service.pid
+log_file=tmp/service.log
+
+for jar in $HOME/out/artifacts/scalaBlog_jar/*.jar; do
+    CLASSPATH=$CLASSPATH:$jar
+done
+
+
+# Arguments to pass to the JVM
+JVM_OPTS=" \
+        -Dservicename=$APPNAME \
+        -Dserverport=$PORT \
+        -Xmx$XMS \
+        -XX:SurvivorRatio=8 \
+        -XX:+UseParNewGC \
+        -XX:+UseConcMarkSweepGC \
+        -XX:+CMSParallelRemarkEnabled \
+        -XX:MaxTenuringThreshold=1 \
+        -XX:CMSInitiatingOccupancyFraction=75 \
+        -XX:+UseCMSInitiatingOccupancyOnly \
+        -XX:+HeapDumpOnOutOfMemoryError \
+	-Djava.rmi.server.hostname=$JMXHOST \
+        -Dcom.sun.management.jmxremote.port=$JMXPORT \
+        -Dcom.sun.management.jmxremote.ssl=false \
+        -Dcom.sun.management.jmxremote.authenticate=false \
+        -Dappconfig=$CONF \
+        -Dapppath=$HOME \
+        -Dappenv=$APPENV" 
+	
+
+
+if [ -x $JAVA_HOME/bin/java ]; then
+    JAVA=$JAVA_HOME/bin/java
+else
+    JAVA=`which java`
+fi
+
+case "$1" in
+    start)
+        # Main startup
+        printf "Starting $APPNAME (port $JMXPORT): "
+        exec $JAVA $JVM_OPTS -cp $CLASSPATH -jar  $JARFILE > $log_file 2>&1 &
+	[ ! -z $pid_file ] && printf "%d" $! > $pid_file
+        echo "OK"
+        ;;
+    stop)
+        # Main shutdown
+        printf "Shutdown $APPNAME (port $JMXPORT): "
+        kill `cat $pid_file`
+	sleep 1
+        echo "OK"
+        ;;
+    reload|restart)
+        $0 stop
+        $0 start
+        ;;
+    status)
+        ;;
+    *)
+        echo "Usage: `basename $0` start|stop|restart|reload"
+        exit 1
+esac
+
+exit 0
