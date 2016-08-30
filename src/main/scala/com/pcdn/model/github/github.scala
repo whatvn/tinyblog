@@ -3,8 +3,7 @@ package com.pcdn.model.github
 import java.io.PrintWriter
 
 import com.github.rjeschke.txtmark._
-import com.pcdn.model.utils.Settings
-import com.pcdn.model.utils.httpClient.HttpClient
+import com.pcdn.model.utils.{HttpClient, Settings}
 import spray.http.{HttpHeader, HttpResponse}
 import spray.json.{JsValue, JsonParser}
 
@@ -21,7 +20,7 @@ object GithubBot {
   class GithubBot(val username: String, val token: String, val repo: String) extends Settings {
     private final val url = "https://api.github.com/repos"
     private final val commitsUrl = "%s/%s/commits?path=_posts".format(url, repo)
-    val client = new HttpClient(username, token)
+    val client = HttpClient(username, token)
 
     import JsonConversion._
 
@@ -33,7 +32,7 @@ object GithubBot {
           val paging = parseLinkHeader(x.value)
           paging.get("next") match {
             case Some(s) => {
-              retrievePaging(s)
+              crawl(s)
               commitsParser(httpResponse)
             }
             case _ => commitsParser(httpResponse)
@@ -55,6 +54,7 @@ object GithubBot {
       println(html)
     }
 
+    // dataDir is defined in trait Settings
     def write_file(filename: String)(httpResponse: HttpResponse): Unit = {
       val abspath = "%s/%s".format(dataDir, filename)
       httpResponse.status.intValue match {
@@ -77,7 +77,7 @@ object GithubBot {
 
     private def filesParser(httpResponse: HttpResponse): Unit = {
       val jsonResult: JsValue = JsonParser(httpResponse.entity.asString)
-      val files = jsonResult.convertTo[file]
+      val files = jsonResult.convertTo[files]
       files.details.filter(fileInfo => {
         fileInfo.filename.endsWith(".md") && fileInfo.status != "removed"
       }).foreach(x => {
@@ -88,7 +88,7 @@ object GithubBot {
       })
     }
 
-    def retrievePaging(url: String = commitsUrl): Unit = {
+    def crawl(url: String = commitsUrl): Unit = {
       println(url)
       client.process(url)(parsePaging)
     }
@@ -96,10 +96,6 @@ object GithubBot {
 
   def main(args: Array[String]): Unit = {
     val bot = GithubBot("whatvn", "2c8fd5e1d6de179e2651613f9753e1b2e132f305", "vnsecurity/vnsecurity.github.io")
-    bot.retrievePaging()
+    bot.crawl()
   }
 }
-
-
-
-

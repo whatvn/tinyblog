@@ -14,7 +14,7 @@ trait Routes extends HttpService {
 
   def index() = {
     val  gb = GithubBot("whatvn", "2c8fd5e1d6de179e2651613f9753e1b2e132f305", "vnsecurity/vnsecurity.github.io")
-    gb.retrievePaging()
+    gb.crawl()
   }
 
 

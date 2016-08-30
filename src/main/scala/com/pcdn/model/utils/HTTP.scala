@@ -16,7 +16,7 @@ import scala.util.{Failure, Success}
 /**
   * Created by Hung on 8/19/16.
   */
-object httpClient {
+object HttpClient {
 
   def apply(user: String, token: String) = new HttpClient(user, token)
 

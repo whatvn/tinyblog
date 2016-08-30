@@ -9,5 +9,5 @@ object JsonConversion extends DefaultJsonProtocol {
 
   implicit val commitToJson = jsonFormat (commit, "url")
   implicit val fileDetailToJson = jsonFormat10(fileDetail)
-  implicit val filesToJson = jsonFormat(file, "files")
+  implicit val filesToJson = jsonFormat(files, "files")
 }
