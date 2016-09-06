@@ -16,7 +16,6 @@ object Server {
   def main(args: Array[String]) {
 
     // start worker to update blog content
-
     BlogContentScheduler.start()
 
     implicit val system = ActorSystem("tinyEngine")

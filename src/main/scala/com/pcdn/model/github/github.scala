@@ -38,6 +38,7 @@ object GithubBot {
             case _ => commitsParser(httpResponse)
           }
         }
+        case List(_, _) => ()
       }
     }
 
