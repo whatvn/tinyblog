@@ -5,9 +5,7 @@ import com.pcdn.model.utils.{Render, Settings}
 import spray.http.MediaTypes.{`text/html` => TEXTHTML}
 import spray.routing._
 import spray.routing.directives.CachingDirectives
-
 import scala.concurrent.duration._
-import scala.language.{implicitConversions, postfixOps}
 
 /**
   * Created by Hung on 8/16/16.

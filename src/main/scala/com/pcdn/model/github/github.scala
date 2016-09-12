@@ -18,6 +18,7 @@ object GithubBot {
   }
 
   class GithubBot(val username: String, val token: String, val repo: String) extends Settings {
+
     private final val url = "https://api.github.com/repos"
     private final val commitsUrl = "%s/%s/commits?path=_posts".format(url, repo)
     val client = HttpClient(username, token)
@@ -84,14 +85,12 @@ object GithubBot {
         fileInfo.filename.endsWith(".md") && fileInfo.status != "removed"
       }).foreach(x => {
         val content_url = "https://raw.githubusercontent.com/%s/master/%s".format(repo, x.filename)
-        println(content_url)
         val fileWriter = write_file(x.filename) _
         client.process(content_url)(fileWriter)
       })
     }
 
     def crawl(url: String = commitsUrl): Unit = {
-      println(url)
       client.process(url)(parsePaging)
     }
   }
