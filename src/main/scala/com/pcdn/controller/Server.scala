@@ -18,13 +18,15 @@ object Server {
     // start worker to update blog content
     BlogContentScheduler.start()
 
+
     implicit val system = ActorSystem("tinyEngine")
 
-    val service = system.actorOf(Props[ServiceImplement], "blogService")
+    lazy val service = system.actorOf(Props[ServiceImplement], "blogService")
 
     implicit val timeout = Timeout(5.seconds)
 
     IO(Http)? Http.Bind(service, interface = "127.0.0.1", port = 8080)
+
   }
 
 }

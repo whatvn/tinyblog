@@ -30,7 +30,6 @@ object HttpClient {
       import system.dispatcher
       val log = Logging(system, getClass)
       val pipeline = sendReceive
-//      log.error(s"Processing url ${url}")
       val responseFuture = pipeline {
         Get(url) ~> credential
       }
@@ -40,7 +39,7 @@ object HttpClient {
           shutdown()
         }
         case Failure(error) =>
-          log.error(error, "Couldn't get elevation")
+          log.error(error, "Couldn't process url")
           shutdown()
       }
 
@@ -49,7 +48,6 @@ object HttpClient {
         system.shutdown()
       }
     }
-
-
   }
 }
+

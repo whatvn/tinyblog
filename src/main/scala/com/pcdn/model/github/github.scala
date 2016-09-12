@@ -26,6 +26,7 @@ object GithubBot {
 
     private def parsePaging(httpResponse: HttpResponse): Unit = {
       val headers: List[HttpHeader] = httpResponse.headers.filter(_.lowercaseName == "link")
+
       headers match {
         case Nil => commitsParser(httpResponse)
         case x :: Nil => {
@@ -98,5 +99,7 @@ object GithubBot {
   def main(args: Array[String]): Unit = {
     val bot = GithubBot("whatvn", "2c8fd5e1d6de179e2651613f9753e1b2e132f305", "vnsecurity/vnsecurity.github.io")
     bot.crawl()
+    val b = scala.math.random.toInt
+
   }
 }
