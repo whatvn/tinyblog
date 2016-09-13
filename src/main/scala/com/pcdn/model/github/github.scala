@@ -1,6 +1,8 @@
 package com.pcdn.model.github
 
 import java.io.PrintWriter
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 import com.github.rjeschke.txtmark._
 import com.pcdn.model.utils.{HttpClient, Settings}
@@ -47,6 +49,8 @@ object GithubBot {
     private def commitsParser(httpResponse: HttpResponse): Unit = {
       val commits: List[commit] = JsonParser(httpResponse.entity.asString).convertTo[List[commit]]
       commits.foreach(commit => {
+        val sd = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault)
+        println(sd.parse(commit.commit.author.date).getTime)
         client.process(commit.url)(filesParser)
       })
     }
@@ -96,7 +100,7 @@ object GithubBot {
   }
 
   def main(args: Array[String]): Unit = {
-    val bot = GithubBot("whatvn", "", "whatvn/whatvn.github.io")
+    val bot = GithubBot("whatvn", "230f86896cbf1696231f926f87e5834ae13612e1", "whatvn/whatvn.github.io")
     bot.crawl()
   }
 }
