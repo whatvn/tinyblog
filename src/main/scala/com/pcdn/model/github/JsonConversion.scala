@@ -7,7 +7,9 @@ import spray.json.DefaultJsonProtocol
   */
 object JsonConversion extends DefaultJsonProtocol {
 
-  implicit val commitToJson = jsonFormat(commit, "sha", "url")
+  implicit val authorToJson = jsonFormat3(author)
+  implicit val commitInfoToJson = jsonFormat(commitInfo, "author")
+  implicit val commitToJson = jsonFormat(commit,"sha", "commit", "url")
   implicit val fileDetailToJson = jsonFormat10(fileDetail)
   implicit val filesToJson = jsonFormat(files, "files")
 }

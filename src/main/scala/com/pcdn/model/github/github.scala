@@ -96,9 +96,7 @@ object GithubBot {
   }
 
   def main(args: Array[String]): Unit = {
-    val bot = GithubBot("whatvn", "2c8fd5e1d6de179e2651613f9753e1b2e132f305", "vnsecurity/vnsecurity.github.io")
+    val bot = GithubBot("whatvn", "", "whatvn/whatvn.github.io")
     bot.crawl()
-    val b = scala.math.random.toInt
-
   }
 }
