@@ -5,4 +5,4 @@ package com.pcdn.model.github
   */
 case class author(name: String, email: String, date: String)
 case class commitInfo(author: author)
-case class commit(sha: String, commit: commitInfo, url: String)
+case class commit(url: String)
