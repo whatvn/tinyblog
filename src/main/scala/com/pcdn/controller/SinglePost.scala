@@ -1,5 +1,6 @@
 package com.pcdn.controller
 
+import com.pcdn.model.Post
 import com.pcdn.model.Post._
 import com.pcdn.model.utils.{Render, Settings}
 import spray.http.MediaTypes.{`text/html` => TEXTHTML}
@@ -13,9 +14,9 @@ import scala.concurrent.duration._
 
 trait SinglePost extends HttpService with Settings with Render with CachingDirectives {
   lazy val singlePost = cache(routeCache(maxCapacity = 100, initialCapacity = 10, timeToIdle = 5.seconds, timeToLive = 60.seconds)) {
-    (get & path("posts" / RestPath)) { id ⇒
-      listPost().find(_.name == id.toString()) match {
-        case Some(p) => render(respondWithMediaType(TEXTHTML), template = html.post.render(p))
+    (get & path("_posts" / RestPath)) { id ⇒
+      listPost(id.toString) match {
+        case Some(p) => render(respondWithMediaType(TEXTHTML), template = html.post.render(Post.buildPost(p)))
         case _ => complete("Not found")
       }
     }
