@@ -17,12 +17,13 @@ object Database extends Settings {
   private val actorSystem = ActorSystem()
 
   val dbDirectory = new File("%s/%s".format(dataDir, "db")).mkdir()
-  private val dbFile = new File("%s/%s/%s".format(dataDir, "db", "blog"))
+  private val dbFile = new File("%s/%s/%s".format(dataDir, "db", "453ffdgdfg"))
 
 
   val db = {
     DBMaker.fileDB(dbFile)
       .closeOnJvmShutdown()
+      .checksumStoreEnable()
       .fileMmapEnable().make()
   }
 
