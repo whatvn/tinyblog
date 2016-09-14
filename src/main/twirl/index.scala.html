@@ -1,5 +1,5 @@
-@import com.pcdn.model.Post
-@(posts: List[Post])
+@import com.pcdn.model.github.BlogMetadata.BlogMetadata
+@(posts: List[BlogMetadata])
 <!DOCTYPE html>
 <html lang="en">
 
@@ -98,7 +98,7 @@
                             @post.desc
                         </h3>
                     </a>
-                    <p class="post-meta">Posted by <a href="#">Hung</a> on @post.date.toString</p>
+                    <p class="post-meta">Posted by <a href="#">Hung</a> on @post.updateTime</p>
                 </div>
                 <hr>
             }
