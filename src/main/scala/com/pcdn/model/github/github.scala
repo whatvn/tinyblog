@@ -2,8 +2,11 @@ package com.pcdn.model.github
 
 import java.io.PrintWriter
 
+import akka.actor.{Props, ActorRef, ActorSystem}
 import com.github.rjeschke.txtmark._
 import com.pcdn.model.Post._
+import com.pcdn.model.Logger
+import com.pcdn.model.Error
 import com.pcdn.model.utils.{HttpClient, Settings}
 import spray.http.HttpResponse
 import spray.json.{JsValue, JsonParser}
@@ -27,6 +30,9 @@ object GithubBot {
     val client = HttpClient(username, token)
     import JsonConversion._
 
+
+    private val logger:ActorRef = ActorSystem.create.actorOf(Props[Logger])
+
     private def parsePaging(httpResponse: HttpResponse): Unit = {
       httpResponse.headers.filter(_.lowercaseName == "link") match {
         case Nil => commitsParser(httpResponse)
@@ -45,10 +51,16 @@ object GithubBot {
     }
 
     private def commitsParser(httpResponse: HttpResponse): Unit = {
-      val commits: List[commit] = JsonParser(httpResponse.entity.asString).convertTo[List[commit]]
-      commits.foreach(commit => {
-        client.process(commit.url)(filesParser)
-      })
+      try {
+        val commits: List[commit] = JsonParser(httpResponse.entity.asString).convertTo[List[commit]]
+        commits.foreach(commit => {
+          client.process(commit.url)(filesParser)
+        })
+      } catch {
+        case de: spray.json.DeserializationException =>
+          val errorMsg = JsonParser(httpResponse.entity.asString).convertTo[BadCredentials]
+          logger!Error(s"${errorMsg.message}, read ${errorMsg.documentation_url}" )
+      }
     }
 
     def markdownParser(httpResponse: HttpResponse): Unit = {

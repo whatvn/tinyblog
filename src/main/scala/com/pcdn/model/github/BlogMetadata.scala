@@ -4,6 +4,7 @@ import com.pcdn.model.Database._
 import com.pcdn.model.utils.Hash
 import org.mapdb.serializer._
 import org.mapdb.{BTreeMap, Serializer}
+import play.twirl.api.TemplateMagic.javaCollectionToScala
 import scala.language.implicitConversions
 
 /**
@@ -15,7 +16,7 @@ object BlogMetadata {
 
   implicit def anyToString(any: AnyRef) = any.toString
 
-  private val blogMetadata: BTreeMap[String, Array[AnyRef]] = db.treeMap("blogContent").keySerializer(Serializer.STRING).
+  private val blogMetadata: BTreeMap[String, Array[AnyRef]] = db.treeMap("blogMetadata").keySerializer(Serializer.STRING).
     valueSerializer(new SerializerArrayTuple(Serializer.STRING, Serializer.STRING, Serializer.STRING, Serializer.STRING, Serializer.STRING)).
     counterEnable().createOrOpen()
 
@@ -29,12 +30,12 @@ object BlogMetadata {
 
 
   def listAll(): List[BlogMetadata] = {
-    blogMetadata.getKeys.toArray().map {
+    blogMetadata.getKeys.toList.map {
       x =>
         blogMetadata.get(x) match {
           case Array(title, author, updateTime, desc, url) => BlogMetadata(title, author, updateTime, desc, url)
         }
-    }.toList
+    }
   }
 
 

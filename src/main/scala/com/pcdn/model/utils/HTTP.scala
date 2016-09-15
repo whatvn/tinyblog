@@ -16,9 +16,11 @@ import scala.util.{Failure, Success}
 /**
   * Created by Hung on 8/19/16.
   */
+
 object HttpClient {
 
   def apply(user: String, token: String) = new HttpClient(user, token)
+
 
   class HttpClient(val user: String, val token: String) {
 
@@ -28,15 +30,16 @@ object HttpClient {
     def process(url: String)(op: HttpResponse => Unit) = {
       implicit val system = ActorSystem("github-api-client")
       import system.dispatcher
-      val log = Logging(system, getClass)
+      val log = Logging(system, HttpClient.getClass)
       val pipeline = sendReceive
       val responseFuture = pipeline {
         Get(url) ~> credential
       }
+
       responseFuture onComplete {
-        case Success(response) => {
-          op(response)
-          shutdown()
+        case Success(response) =>  {
+            op(response)
+            shutdown()
         }
         case Failure(error) =>
           log.error(error, "Couldn't process url")
@@ -49,5 +52,6 @@ object HttpClient {
       }
     }
   }
+
 }
 
