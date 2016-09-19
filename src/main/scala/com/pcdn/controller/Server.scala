@@ -2,10 +2,11 @@ package com.pcdn.controller
 
 import akka.actor.{ActorSystem, Props}
 import akka.io.IO
-import akka.util.Timeout
-import com.pcdn.model.{Database, BlogContentScheduler}
-import spray.can.Http
 import akka.pattern.ask
+import akka.util.Timeout
+import com.pcdn.model.BlogContentScheduler
+import spray.can.Http
+
 import scala.concurrent.duration._
 
 /**
@@ -17,10 +18,6 @@ object Server {
 
     // start worker to update blog content
     BlogContentScheduler.start()
-
-
-    // start worker to commit database to disk
-    Database.start()
 
     implicit val system = ActorSystem("tinyEngine")
 
