@@ -28,8 +28,8 @@ object Server {
 
     implicit val timeout = Timeout(5.seconds)
 
-    IO(Http)? Http.Bind(service, interface = "127.0.0.1", port = 8080)
-
+    IO(Http)? Http.Bind(service, interface = System.getProperty("listen", "127.0.0.1"),
+      port =  System.getProperty("serverport", "8080").toInt)
   }
 
 }

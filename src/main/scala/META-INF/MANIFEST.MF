@@ -1,37 +1,37 @@
 Manifest-Version: 1.0
-Class-Path: parboiled-java-1.1.6.jar elsa-3.0.0-M5.jar eclipse-collect
- ions-forkjoin-7.1.0.jar lz4-1.3.0.jar twirl-api_2.11-1.1.1.jar config
- -1.2.1.jar twirl-api_2.10-1.1.1.jar twirl-compiler_2.10-1.1.1.jar twi
- rl-parser_2.10-1.1.1.jar commons-lang3-3.4.jar sbt-assembly-0.9.1.jar
-  sbt-twirl-1.1.1.jar jansi.jar jline.jar scala-compiler.jar scala-lib
- rary.jar scala-reflect.jar actions-0.13.12.jar api-0.13.12.jar apply-
- macro-0.13.12.jar cache-0.13.12.jar classfile-0.13.12.jar classpath-0
- .13.12.jar collections-0.13.12.jar command-0.13.12.jar compile-0.13.1
- 2.jar compiler-integration-0.13.12.jar compiler-interface-0.13.12.jar
-  compiler-ivy-integration-0.13.12.jar completion-0.13.12.jar control-
- 0.13.12.jar cross-0.13.12.jar incremental-compiler-0.13.12.jar io-0.1
- 3.12.jar ivy-0.13.12.jar ivy-2.3.0-sbt-2cc8d2761242b072cedb0a04cb3943
- 5c4fa24f9a.jar jansi-1.11.jar jawn-parser_2.10-0.6.0.jar jline-2.13.j
- ar jsch-0.1.46.jar json4s-ast_2.10-3.2.10.jar json4s-core_2.10-3.2.10
- .jar json4s-support_2.10-0.6.0.jar launcher-interface-1.0.0-M1.jar lo
- gging-0.13.12.jar logic-0.13.12.jar main-0.13.12.jar main-settings-0.
- 13.12.jar paranamer-2.6.jar persist-0.13.12.jar process-0.13.12.jar q
- uasiquotes_2.10-2.0.1.jar relation-0.13.12.jar run-0.13.12.jar sbinar
- y_2.10-0.4.2.jar sbt-0.13.12.jar scala-pickling_2.10-0.10.1.jar scala
- -reflect-2.10.6.jar serialization_2.10-0.1.2.jar task-system-0.13.12.
- jar tasks-0.13.12.jar test-agent-0.13.12.jar test-interface-1.0.jar t
- esting-0.13.12.jar tracking-0.13.12.jar interface-0.13.12.jar shapele
- ss_2.11-1.2.4.jar jcip-annotations-1.0.jar eclipse-collections-7.1.0.
- jar asm-4.1.jar spray-io_2.11-1.3.3.jar eclipse-collections-api-7.1.0
- .jar asm-analysis-4.1.jar commons-lang3-3.4.jar markwrap_2.11-1.0.2.j
- ar spray-httpx_2.11-1.3.3.jar akka-actor_2.11-2.3.9.jar spray-routing
- _2.11-1.3.3.jar asm-tree-4.1.jar parboiled-core-1.1.7.jar kotlin-runt
- ime-1.0.2.jar kotlin-stdlib-1.0.2.jar scala-xml_2.11-1.0.3.jar spray-
- can_2.11-1.3.3.jar scala-library-2.11.8.jar guava-19.0.jar wikitext-c
- ore-1.4.jar pegdown-1.4.2.jar spray-client_2.11-1.3.3.jar mapdb-3.0.1
- .jar asm-util-4.1.jar textile-core-1.4.jar mimepull-1.9.5.jar spray-h
- ttp_2.11-1.3.3.jar concurrentlinkedhashmap-lru-1.4.2.jar spray-cachin
- g_2.11-1.3.3.jar spray-json_2.11-1.3.2.jar parboiled-scala_2.11-1.1.7
- .jar spray-util_2.11-1.3.3.jar
+Class-Path: parboiled-java-1.1.6.jar asm-util-4.1.jar eclipse-collecti
+ ons-forkjoin-7.1.0.jar twirl-api_2.11-1.1.1.jar config-1.2.1.jar twir
+ l-api_2.10-1.1.1.jar twirl-compiler_2.10-1.1.1.jar twirl-parser_2.10-
+ 1.1.1.jar commons-lang3-3.4.jar sbt-assembly-0.9.1.jar sbt-twirl-1.1.
+ 1.jar jansi.jar jline.jar scala-compiler.jar scala-library.jar scala-
+ reflect.jar actions-0.13.12.jar api-0.13.12.jar apply-macro-0.13.12.j
+ ar cache-0.13.12.jar classfile-0.13.12.jar classpath-0.13.12.jar coll
+ ections-0.13.12.jar command-0.13.12.jar compile-0.13.12.jar compiler-
+ integration-0.13.12.jar compiler-interface-0.13.12.jar compiler-ivy-i
+ ntegration-0.13.12.jar completion-0.13.12.jar control-0.13.12.jar cro
+ ss-0.13.12.jar incremental-compiler-0.13.12.jar io-0.13.12.jar ivy-0.
+ 13.12.jar ivy-2.3.0-sbt-2cc8d2761242b072cedb0a04cb39435c4fa24f9a.jar 
+ jansi-1.11.jar jawn-parser_2.10-0.6.0.jar jline-2.13.jar jsch-0.1.46.
+ jar json4s-ast_2.10-3.2.10.jar json4s-core_2.10-3.2.10.jar json4s-sup
+ port_2.10-0.6.0.jar launcher-interface-1.0.0-M1.jar logging-0.13.12.j
+ ar logic-0.13.12.jar main-0.13.12.jar main-settings-0.13.12.jar paran
+ amer-2.6.jar persist-0.13.12.jar process-0.13.12.jar quasiquotes_2.10
+ -2.0.1.jar relation-0.13.12.jar run-0.13.12.jar sbinary_2.10-0.4.2.ja
+ r sbt-0.13.12.jar scala-pickling_2.10-0.10.1.jar scala-reflect-2.10.6
+ .jar serialization_2.10-0.1.2.jar task-system-0.13.12.jar tasks-0.13.
+ 12.jar test-agent-0.13.12.jar test-interface-1.0.jar testing-0.13.12.
+ jar tracking-0.13.12.jar interface-0.13.12.jar shapeless_2.11-1.2.4.j
+ ar jcip-annotations-1.0.jar textile-core-1.4.jar akka-actor_2.11-2.3.
+ 9.jar asm-4.1.jar spray-io_2.11-1.3.3.jar eclipse-collections-api-7.1
+ .0.jar asm-analysis-4.1.jar commons-lang3-3.4.jar markwrap_2.11-1.0.2
+ .jar spray-httpx_2.11-1.3.3.jar mapdb-3.0.1.jar eclipse-collections-7
+ .1.0.jar pegdown-1.4.2.jar asm-tree-4.1.jar parboiled-core-1.1.7.jar 
+ kotlin-runtime-1.0.2.jar scala-xml_2.11-1.0.3.jar spray-can_2.11-1.3.
+ 3.jar scala-library-2.11.8.jar guava-19.0.jar wikitext-core-1.4.jar m
+ imepull-1.9.5.jar kotlin-stdlib-1.0.2.jar elsa-3.0.0-M5.jar spray-rou
+ ting_2.11-1.3.3.jar lz4-1.3.0.jar spray-http_2.11-1.3.3.jar concurren
+ tlinkedhashmap-lru-1.4.2.jar spray-caching_2.11-1.3.3.jar spray-json_
+ 2.11-1.3.2.jar parboiled-scala_2.11-1.1.7.jar spray-util_2.11-1.3.3.j
+ ar spray-client_2.11-1.3.3.jar
 Main-Class: com.pcdn.controller.Server
 

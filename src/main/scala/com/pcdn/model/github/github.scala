@@ -25,7 +25,6 @@ object GithubBot {
     private val logger: ActorRef = ActorSystem.create.actorOf(Props[Logger])
     import JsonConversion._
 
-
     private def parsePaging(httpResponse: HttpResponse): Unit = {
       httpResponse.headers.filter(_.lowercaseName == "link") match {
         case Nil => commitsParser(httpResponse)
