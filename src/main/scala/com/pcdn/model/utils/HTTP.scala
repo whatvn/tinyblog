@@ -32,6 +32,7 @@ object HttpClient {
       import system.dispatcher
       val log = Logging(system, HttpClient.getClass)
       val pipeline = sendReceive
+
       val responseFuture = pipeline {
         Get(url) ~> credential
       }

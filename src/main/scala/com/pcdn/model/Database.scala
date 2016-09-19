@@ -29,7 +29,7 @@ object Database extends Settings {
   private class DBCommitter(database: DB) {
     def run() = {
       database.commit()
-      actorSystem.log.debug("[mapdb] Database committer has persisted data to disk.")
+      actorSystem.log.info("[mapdb] Database committer has persisted data to disk.")
     }
   }
 
