@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 
   <head>
 
@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Clean Blog - About</title>
+    <title>About</title>
 
       <!-- Bootstrap Core CSS -->
     <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -42,7 +42,7 @@
             <span class="sr-only">Toggle navigation</span>
             Menu <i class="fa fa-bars"></i>
           </button>
-          <a class="navbar-brand" href="index.html">Start Bootstrap</a>
+          @*<a class="navbar-brand" href="index.html">Start Bootstrap</a>*@
         </div>
 
           <!-- Collect the nav links, forms, and other content for toggling -->
@@ -70,7 +70,7 @@
             <div class="page-heading">
               <h1>About Me</h1>
               <hr class="small">
-              <span class="subheading">This is what I do.</span>
+              <span class="subheading">This is who I am</span>
             </div>
           </div>
         </div>
@@ -81,9 +81,17 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Saepe nostrum ullam eveniet pariatur voluptates odit, fuga atque ea nobis sit soluta odio, adipisci quas excepturi maxime quae totam ducimus consectetur?</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius praesentium recusandae illo eaque architecto error, repellendus iusto reprehenderit, doloribus, minus sunt. Numquam at quae voluptatum in officia voluptas voluptatibus, minus!</p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nostrum molestiae debitis nobis, quod sapiente qui voluptatum, placeat magni repudiandae accusantium fugit quas labore non rerum possimus, corrupti enim modi! Et.</p>
+          <p>I am a computer Engineer who mostly work on Linux, Python, Java, Java Script and C programming language. I am also a founder of start-up company where we develop a new platform for video delivery using P2P technology called PCDN.IO. This blog is where my interesting (and sometimes hated) things will be noted.</p>
+
+          <p>This blog run on a blog engine <a href="http://github.com/whatvn/tinyblog"> <b>I wrote myself</b></a> when learning Scala programming language. Behind the scene it's based on following technologies:
+          </p>
+          <li><a href="http://spray.io"> <b>Spray framework</b> </a>: Web server, routing, HTTP Client, Json deserializer, and caching use Spray library.</li>
+          <li><a href="https://github.com/playframework/twirl"><b>Twirl</b> </a>: is a template engine to render HTML.</li>
+          <li><a href="http://www.mapdb.org/"><b>MapDB</b></a>: an embedded high performance databased written in Krotlin (a another JVM based language) to store commit history and blog metadata.</li>
+          <li><b>Github</b>: blog content was written in Markdown, then commit to Github under repository: http://github.com/whatvn/whatvn.github.io. There will be a worker (implemented inside blog engine to fetch data from Github and display content on this blog.</li>
+          <li><a href="https://startbootstrap.com/template-overviews/clean-blog/"><b>Boostrap and Clean Blog template</b></a>: I am not so good at HTML and design, so I pick this free/simple boostrap template to use. Thanks Clean blog author :). </li>
+          <li><a href="http://software.clapper.org/markwrap/"><b>Markwrap</b></a>: Markdown parser to parse markdown text format to html document.</li>
+          <li><a href="http://akka.io/"><b>Akka</b></a>: To build worker and logging stuff.</li>
         </div>
       </div>
     </div>
