@@ -23,6 +23,7 @@ object GithubBot {
     private final val commitsUrl = "%s/%s/commits?path=_posts".format(url, repo)
     val client = HttpClient(username, token)
     private val logger: ActorRef = ActorSystem.create.actorOf(Props[Logger])
+
     import JsonConversion._
 
     private def parsePaging(httpResponse: HttpResponse): Unit = {
@@ -53,18 +54,27 @@ object GithubBot {
       }
     }
 
+    private def fileWriter(path: String, content: String) = {
+      new PrintWriter(path) {
+        write(content)
+        close
+      }
+    }
+
     private def write(filename: String, sha: String, updateTime: String, author: String)(httpResponse: HttpResponse): Unit = {
-      CommitHistory.update(filename, sha)
+
       val abspath = "%s/%s".format(dataDir, filename)
       httpResponse.status.intValue match {
         case 200 =>
-          val url = filename.replaceAll(".md$", "")
-          val responseString = httpResponse.entity.asString
-          val metadata = BlogMetadata(getTitle(responseString), author, updateTime, getDesc(responseString), url)
-          BlogMetadata.put(filename, metadata)
-          new PrintWriter(abspath) {
-            write(httpResponse.entity.asString)
-            close()
+          try {
+            val url = filename.replaceAll(".md$", "")
+            val responseString = httpResponse.entity.asString
+            val metadata = BlogMetadata(getTitle(responseString), author, updateTime, getDesc(responseString), url)
+            BlogMetadata.put(filename, metadata)
+            fileWriter(abspath, httpResponse.entity.asString)
+            CommitHistory.update(filename, sha)
+          } catch {
+            case x: Throwable => logger ! Error(x.getMessage)
           }
         case _ =>
       }
