@@ -36,10 +36,8 @@ object CommitHistory {
   }
 
   def isProcessed(fileId: String, sha: String): Boolean = get(fileId) match {
-    case None =>
-      false
-    case Some(x) =>
-      if (x contains(Hash.toLong(sha))) true else false
+    case None => false
+    case Some(x) => x contains(Hash.toLong(sha))
   }
 
   def del(fileId: String) = commitHistory.remove(Hash.toHexString(fileId))
