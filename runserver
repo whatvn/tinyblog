@@ -1,18 +1,19 @@
 #!/bin/sh
 export APPNAME=BLOGS
-export HOME="/Users/Hung/ScalaProjects/scalaBlog"
+export HOME="/Users/Hung/ScalaProjects/tinyblog"
 cd $HOME
 export JMXHOST=127.0.0.1
-export JMXPORT=1465
-export PORT=1464
+export JMXPORT=1466
+export PORT=1467
 export APPENV=development
 export XMS=128m
 export CONF=conf
-export JARFILE="$HOME/out/artifacts/scalaBlog_jar/scalaBlog.jar"
+export JARFILE=$HOME/dist/tinyblog.jar
 pid_file=tmp/service.pid
 log_file=tmp/service.log
 
-for jar in $HOME/out/artifacts/scalaBlog_jar/*.jar; do
+#for jar in $HOME/lib/*.jar; do
+for jar in $HOME/dist/*.jar; do
     CLASSPATH=$CLASSPATH:$jar
 done
 
@@ -20,6 +21,7 @@ done
 # Arguments to pass to the JVM
 JVM_OPTS=" \
         -Dservicename=$APPNAME \
+	-Dsun.lang.ClassLoader.allowArraySyntax=true \
         -Dserverport=$PORT \
         -Xmx$XMS \
         -XX:SurvivorRatio=8 \
