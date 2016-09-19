@@ -2,4 +2,6 @@
 *.jar
 *.pid
 *.log
-
+target/*
+project/target/*
+data/*
