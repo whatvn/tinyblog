@@ -1,21 +1,26 @@
-lazy val root = project.in(file(".")).enablePlugins(SbtTwirl)
-
-name := "scalaBlog"
+name := "TinyBlog"
 
 version := "1.0"
 
 scalaVersion := "2.11.8"
 
-scalacOptions   := Seq("-feature", "-deprecation", "-Xlint")
+scalacOptions := Seq("-unchecked", "-deprecation", "-encoding", "utf8")
 
-val circeVersion = "0.4.1"
+lazy val root = (project in file(".")).enablePlugins(SbtTwirl)
 
-//libraryDependencies += "io.circe"                   %% "circe-core"       % circeVersion
-//libraryDependencies += "io.circe"                   %% "circe-generic"    % circeVersion
-//libraryDependencies += "io.circe"                   %% "circe-parser"       % circeVersion
-//libraryDependencies += "com.squareup.okhttp3"        % "okhttp"           % "3.2.0"
-//libraryDependencies += "com.typesafe.scala-logging" %% "scala-logging"    % "3.1.0"
-//
-//libraryDependencies += "org.scalatest"     %% "scalatest"       % "2.2.6"     % "test"
-//libraryDependencies += "ch.qos.logback"     % "logback-classic" % "1.1.7"    % "test"
-//
+libraryDependencies ++= {
+  val akkaV = "2.3.9"
+  val sprayV = "1.3.3"
+  Seq(
+    "io.spray"            %%  "spray-can"     % sprayV,
+    "io.spray"            %%  "spray-routing" % sprayV,
+    "io.spray"            %%  "spray-caching" % sprayV,
+    "io.spray"            %%  "spray-client" % sprayV,
+    "io.spray"            %%  "spray-json" % "1.3.2",
+    "io.spray"            %%  "spray-testkit" % sprayV  % "test",
+    "com.typesafe.akka"   %%  "akka-actor"    % akkaV,
+    "org.mapdb"           %  "mapdb"          % "3.0.1",
+    "org.clapper"         %% "markwrap"       % "1.0.2",
+    "org.specs2"          %%  "specs2-core"   % "2.3.11" % "test"
+  )
+}
