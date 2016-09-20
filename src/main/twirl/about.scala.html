@@ -83,15 +83,14 @@
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
           <p>I am a computer Engineer who mostly work on Linux, Python, Java, Java Script and C programming language. I am also a founder of start-up company where we develop a new platform for video delivery using P2P technology called PCDN.IO. This blog is where my interesting (and sometimes hated) things will be noted.</p>
 
-          <p>This blog run on a blog engine <a href="http://github.com/whatvn/tinyblog"> <b>I wrote myself</b></a> when learning Scala programming language. Behind the scene it's based on following technologies:
+          <p>This blog run on a <a href="http://github.com/whatvn/tinyblog"><b>blog engine</b></a> I wrote myself when learning Scala programming language. Behind the scene it's based on following technologies:
           </p>
           <li><a href="http://spray.io"> <b>Spray framework</b> </a>: Web server, routing, HTTP Client, Json deserializer, and caching use Spray library.</li>
           <li><a href="https://github.com/playframework/twirl"><b>Twirl</b> </a>: is a template engine to render HTML.</li>
-          <li><a href="http://www.mapdb.org/"><b>MapDB</b></a>: an embedded high performance databased written in Krotlin (a another JVM based language) to store commit history and blog metadata.</li>
+          <li><a href="http://www.mapdb.org/"><b>MapDB</b></a>: an embedded high performance database written in Krotlin (a another JVM based language) to store commit history and blog metadata.</li>
           <li><b>Github</b>: blog content was written in Markdown, then commit to Github under repository: http://github.com/whatvn/whatvn.github.io. There will be a worker (implemented inside blog engine to fetch data from Github and display content on this blog.</li>
           <li><a href="https://startbootstrap.com/template-overviews/clean-blog/"><b>Boostrap and Clean Blog template</b></a>: I am not so good at HTML and design, so I pick this free/simple boostrap template to use. Thanks Clean blog author :). </li>
-          <li><a href="http://software.clapper.org/markwrap/"><b>Markwrap</b></a>: Markdown parser to parse markdown text format to html document.</li>
-          <li><a href="http://akka.io/"><b>Akka</b></a>: To build worker and logging stuff.</li>
+          <li><a href="https://github.com/sirthias/pegdown/"><b>Pegdown</b></a>: Markdown parser to parse markdown text format to html document (used to use Markwrap but it does not provide a method to build parser with timeout option).</li>
         </div>
       </div>
     </div>
