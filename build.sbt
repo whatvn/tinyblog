@@ -1,4 +1,4 @@
-name := "TinyBlog"
+name := "MyBlog"
 
 version := "1.0"
 
@@ -20,7 +20,7 @@ libraryDependencies ++= {
     "io.spray"            %%  "spray-testkit" % sprayV  % "test",
     "com.typesafe.akka"   %%  "akka-actor"    % akkaV,
     "org.mapdb"           %  "mapdb"          % "3.0.1",
-    "org.clapper"         %% "markwrap"       % "1.0.2",
+    "org.pegdown"         % "pegdown"         % "1.6.0",
     "org.specs2"          %%  "specs2-core"   % "2.3.11" % "test"
   )
 }
