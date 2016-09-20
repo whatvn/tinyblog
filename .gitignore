@@ -5,3 +5,7 @@
 target/*
 project/target/*
 data/*
+project/*
+.idea/libraries/SBT__com_typesafe_play_twirl_api_2_11_1_1_1_jar.xml
+
+.idea/.name
