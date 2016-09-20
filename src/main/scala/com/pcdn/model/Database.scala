@@ -34,11 +34,4 @@ object Database extends Settings {
         system.log.info("[mapdb] Database committer has persisted data to disk.")
     }
   }
-
-
-
-
-
-
-
 }

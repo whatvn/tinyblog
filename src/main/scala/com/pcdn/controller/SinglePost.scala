@@ -13,7 +13,7 @@ import scala.concurrent.duration._
   */
 
 trait SinglePost extends HttpService with Settings with Render with CachingDirectives {
-  lazy val singlePost = cache(routeCache(maxCapacity = 100, initialCapacity = 10, timeToIdle = 5.seconds, timeToLive = 60.seconds)) {
+  lazy val singlePost = cache(routeCache(maxCapacity = 100, initialCapacity = 10, timeToIdle = 5.seconds, timeToLive = 60.minutes)) {
     (get & path("_posts" / RestPath)) { id ⇒
       listPost(id.toString) match {
         case Some(p) => render(respondWithMediaType(TEXTHTML), template = html.post.render(Post.buildPost(p)))

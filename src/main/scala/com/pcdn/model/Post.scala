@@ -7,8 +7,7 @@ import java.util.Locale
 
 import com.pcdn.model.github.BlogMetadata
 import com.pcdn.model.github.BlogMetadata.BlogMetadata
-import com.pcdn.model.utils.Settings
-import org.clapper.markwrap.{MarkWrap, MarkupType}
+import com.pcdn.model.utils.{Markdown, Settings}
 import play.twirl.api.Html
 import spray.http.DateTime
 
@@ -54,16 +53,18 @@ object Post extends Settings {
     case Some(d) => d.replace("DESCRIPTION:", "")
   }
 
+  def toHtmlDocument(source: Iterator[String]) = Html(Markdown(3000).parseToHTML(source mkString "\n"))
+
   // def buildPostsFromCache[T](key: T): Future[List[Post]] = cache(key) { listPost }
   def getPostDay(date: String) = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault).parse(date).toString
 
   def buildPost(f: File): Post = {
     val resource = Source.fromFile(f, "UTF-8")
-    val src = resource.getLines()
+    val src: Iterator[String] = resource.getLines()
     val title = src drop 0 next
     val desc = src drop 0 next
     var (date, author) =  (DateTime.now.toIsoDateString, "Anonymous")
-    val content: Html = Html(MarkWrap.parserFor(MarkupType.Markdown).parseToHTML(src.mkString("\n")))
+    val content: Html = toHtmlDocument(src)
     BlogMetadata.get("_posts/" + f.getName) match {
       case Some(x) =>
         date = getPostDay(x.updateTime)
