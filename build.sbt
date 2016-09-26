@@ -19,8 +19,8 @@ libraryDependencies ++= {
     "io.spray"            %%  "spray-json" % "1.3.2",
     "io.spray"            %%  "spray-testkit" % sprayV  % "test",
     "com.typesafe.akka"   %%  "akka-actor"    % akkaV,
-    "org.mapdb"           %  "mapdb"          % "3.0.1",
-    "org.pegdown"         % "pegdown"         % "1.6.0",
+    "org.pegdown"         %   "pegdown"              % "1.4.2",
+    "org.mapdb"           %   "mapdb"          % "3.0.1",
     "org.specs2"          %%  "specs2-core"   % "2.3.11" % "test"
   )
 }
