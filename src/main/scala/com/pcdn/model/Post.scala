@@ -14,7 +14,6 @@ import spray.http.DateTime
 import scala.io.Source
 import scala.language.postfixOps
 
-
 /**
   * Created by Hung on 8/16/16.
   */
@@ -26,17 +25,11 @@ object Post extends Settings {
     new Post(title, desc, content, date, author)
   }
 
-  /*
-    val system = ActorSystem()
-    val cache: Cache[List[Post]] = LruCache(maxCapacity = 100, initialCapacity = 10, timeToIdle = 5.seconds, timeToLive = 60.seconds)
-   */
-
   def listPost(id: String): Option[File] = {
     new File(dataDir + "/_posts").listFiles.find({
       x => x.getName.replaceAll(".md$", "") == id && x.isFile
     })
   }
-
 
   def listPostFromDb(page: Int): List[BlogMetadata] = {
     // Github api return newest commit then the latter, so newest key will be at the last
@@ -55,7 +48,6 @@ object Post extends Settings {
 
   def toHtmlDocument(source: Iterator[String]) = Html(Markdown(3000).parseToHTML(source mkString "\n"))
 
-  // def buildPostsFromCache[T](key: T): Future[List[Post]] = cache(key) { listPost }
   def getPostDay(date: String) = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault).parse(date).toString
 
   def buildPost(f: File): Post = {

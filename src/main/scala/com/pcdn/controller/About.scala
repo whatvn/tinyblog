@@ -12,7 +12,7 @@ trait About extends HttpService with Render {
 
   lazy val aboutPage = {
     (get & path("about.html")) {
-      render(respondWithMediaType(TEXTHTML), template = html.about.render())
+      renderHtml(respondWithMediaType(TEXTHTML), template = html.about.render())
     }
   }
 }

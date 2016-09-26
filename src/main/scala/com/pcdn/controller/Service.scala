@@ -10,7 +10,12 @@ import scala.language.implicitConversions
 /**
   * Created by Hung on 8/15/16.
   */
-class ServiceImplement extends Actor with SinglePost with StaticResource with Index with About {
+class ServiceImplement extends Actor
+  with SinglePost
+  with StaticResource
+  with Index
+  with About
+  with RSS {
 
   override def actorRefFactory = context
 
@@ -23,7 +28,8 @@ class ServiceImplement extends Actor with SinglePost with StaticResource with In
       staticResources ~
         indexPage ~
         singlePost ~
-        aboutPage
+        aboutPage ~
+        rss
     )
   }
 }

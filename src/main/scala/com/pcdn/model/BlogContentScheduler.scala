@@ -29,8 +29,8 @@ object BlogContentScheduler extends Settings {
 
     implicit val executor = actorSystem.dispatcher
     scheduler.schedule(
-      initialDelay = Duration(1, TimeUnit.MILLISECONDS),
-      interval = Duration(30, TimeUnit.SECONDS),
+      initialDelay = Duration(10, TimeUnit.SECONDS),
+      interval = Duration(60, TimeUnit.SECONDS),
       runnable = task)
   }
 }

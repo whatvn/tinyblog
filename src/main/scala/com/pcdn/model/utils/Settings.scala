@@ -11,4 +11,5 @@ trait Settings {
   final val githubUsername:String = configLoader.getString("blog.github.username")
   final val githubToken:String = configLoader.getString("blog.github.token")
   final val githubRepo:String = configLoader.getString("blog.github.repo")
+  final val domainName: String = configLoader.getString("blog.domain")
 }
