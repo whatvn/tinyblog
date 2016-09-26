@@ -13,7 +13,7 @@ import scala.concurrent.duration._
   */
 trait RSS extends HttpService with Render with CachingDirectives with Settings {
   lazy val rss = dynamic {
-    cache(routeCache(maxCapacity = 100, initialCapacity = 10, timeToIdle = 5.seconds, timeToLive = 60.seconds)) {
+    alwaysCache(routeCache(maxCapacity = 100, initialCapacity = 10, timeToIdle = 5.seconds, timeToLive = 60.seconds)) {
       (get & path("feed.xml")) {
         renderXml(respondWithMediaType(`application/xml`), template = xml.feed.render(listPostFromDb(1), domainName))
       }

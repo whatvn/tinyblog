@@ -46,7 +46,7 @@ object Post extends Settings {
     case Some(d) => d.replace("DESCRIPTION:", "")
   }
 
-  def toHtmlDocument(source: Iterator[String]) = Html(Markdown(3000).parseToHTML(source mkString "\n"))
+  def toHtmlDocument(source: Iterator[String]) = Html(Markdown(5000).parseToHTML(source mkString "\n"))
 
   def getPostDay(date: String) = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault).parse(date).toString
 

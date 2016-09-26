@@ -15,7 +15,7 @@ import scala.concurrent.duration._
 trait Index extends HttpService with Render with CachingDirectives {
 
   lazy val indexPage = dynamic {
-    cache(routeCache(maxCapacity = 100, initialCapacity = 10, timeToIdle = 5.seconds, timeToLive = 60.seconds)) {
+    alwaysCache(routeCache(maxCapacity = 100, initialCapacity = 10, timeToIdle = 5.seconds, timeToLive = 60.seconds)) {
       (get & pathEndOrSingleSlash) {
         renderHtml(respondWithMediaType(TEXTHTML), template = html.index.render(listPostFromDb(1)))
       }

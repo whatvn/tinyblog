@@ -2,9 +2,11 @@ package com.pcdn.model.utils
 
 import org.pegdown.{Extensions, PegDownProcessor}
 
+
 /**
   * Created by Hung on 9/20/16.
   */
+
 case class Markdown(maxParsingTime: Long = 2000) {
   val pegDown = new PegDownProcessor(Extensions.NONE |
     Extensions.DEFINITIONS |
