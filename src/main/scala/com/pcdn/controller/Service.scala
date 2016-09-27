@@ -14,8 +14,7 @@ class ServiceImplement extends Actor
   with SinglePost
   with StaticResource
   with Index
-  with About
-  with RSS {
+  with About with RSS {
 
   override def actorRefFactory = context
 

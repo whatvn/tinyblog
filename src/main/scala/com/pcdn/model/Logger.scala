@@ -4,13 +4,18 @@ package com.pcdn.model
   * Created by Hung on 9/15/16.
   */
 
-import akka.actor.Actor
+import akka.actor.{Actor, ActorSystem, Props}
 import akka.event.Logging
 
 
 
 case class Info(msg: String)
 case class Error(msg: String)
+
+object Logger {
+  val logger = ActorSystem.create.actorOf(Props[Logger])
+}
+
 class Logger extends Actor {
   val log = Logging(context.system, this)
   override def preStart() = {

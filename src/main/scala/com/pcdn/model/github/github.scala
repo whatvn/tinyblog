@@ -2,10 +2,10 @@ package com.pcdn.model.github
 
 import java.io.PrintWriter
 
-import akka.actor.{ActorRef, ActorSystem, Props}
+import com.pcdn.model.Error
+import com.pcdn.model.Logger.logger
 import com.pcdn.model.Post._
 import com.pcdn.model.utils.{HttpClient, Settings}
-import com.pcdn.model.{Error, Logger}
 import spray.http.HttpResponse
 import spray.json.{JsValue, JsonParser}
 
@@ -22,7 +22,6 @@ object GithubBot {
     private final val url = "https://api.github.com/repos"
     private final val commitsUrl = "%s/%s/commits?path=_posts".format(url, repo)
     val client = HttpClient(username, token)
-    private val logger: ActorRef = ActorSystem.create.actorOf(Props[Logger])
 
     import JsonConversion._
 

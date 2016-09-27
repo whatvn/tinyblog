@@ -2,6 +2,7 @@ package com.pcdn.model.github
 
 import com.pcdn.model.Database._
 import com.pcdn.model.utils.Hash
+import com.pcdn.model.utils.Hash.toLong
 import org.mapdb.serializer.SerializerLongArray
 import org.mapdb.{BTreeMap, Serializer}
 
@@ -23,7 +24,7 @@ object CommitHistory {
 
 
   def update(fileId: String, sha: String) = {
-    val v = Array(Hash toLong sha)
+    val v = Array(toLong(sha))
     val k = Hash.toHexString(fileId)
     isSet(fileId) match {
       case true =>
@@ -37,7 +38,7 @@ object CommitHistory {
 
   def isProcessed(fileId: String, sha: String): Boolean = get(fileId) match {
     case None => false
-    case Some(x) => x contains(Hash.toLong(sha))
+    case Some(x) => x contains toLong(sha)
   }
 
   def del(fileId: String) = commitHistory.remove(Hash.toHexString(fileId))

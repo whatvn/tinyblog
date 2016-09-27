@@ -14,9 +14,6 @@ trait StaticResource extends  HttpService {
       } ~
         path("static"/Rest) { path =>
           getFromResource("static/%s" format path)
-        } ~
-        path("file") {
-          getFromResource("application.conf")
         }
     }
 }
