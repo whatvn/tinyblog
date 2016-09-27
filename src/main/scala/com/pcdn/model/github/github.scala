@@ -23,8 +23,6 @@ object GithubBot {
     private final val commitsUrl = "%s/%s/commits?path=_posts".format(url, repo)
     val client = HttpClient(username, token)
 
-    import JsonConversion._
-
     private def parsePaging(httpResponse: HttpResponse): Unit = {
       httpResponse.headers.filter(_.lowercaseName == "link") match {
         case Nil => commitsParser(httpResponse)

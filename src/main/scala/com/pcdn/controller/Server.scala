@@ -4,7 +4,7 @@ import akka.actor.{ActorSystem, Props}
 import akka.io.IO
 import akka.pattern.ask
 import akka.util.Timeout
-import com.pcdn.model.BlogContentScheduler
+import com.pcdn.model.Crawler
 import spray.can.Http
 
 import scala.concurrent.duration._
@@ -17,7 +17,7 @@ object Server {
   def main(args: Array[String]) {
 
     // start worker to update blog content
-    BlogContentScheduler.start()
+    Crawler.start
 
     implicit val system = ActorSystem("tinyEngine")
 
