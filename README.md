@@ -12,7 +12,7 @@ A simple blog engine written in scala with spray, bootstrap and github as storag
 
 # Demo:
 
-There’s a running demo version of this blogging engine here: http://40.87.57.33/ . I will move all my personal blog to use this blogging engine as soon as possible.
+There’s a running demo version of this blogging engine here: http://40.76.35.190/ . I will move all my personal blog to use this blogging engine as soon as possible.
 
 # License:
 
