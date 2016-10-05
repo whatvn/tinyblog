@@ -23,6 +23,8 @@ object GithubBot {
     private final val commitsUrl = "%s/%s/commits?path=_posts".format(url, repo)
     val client = HttpClient(username, token)
 
+    import JsonConversion._
+
     private def parsePaging(httpResponse: HttpResponse): Unit = {
       httpResponse.headers.filter(_.lowercaseName == "link") match {
         case Nil => commitsParser(httpResponse)
@@ -38,16 +40,18 @@ object GithubBot {
       }
     }
 
-    private def commitsParser(httpResponse: HttpResponse): Unit = {
-      try {
-        val commits: List[commit] = JsonParser(httpResponse.entity.asString).convertTo[List[commit]]
-        commits.foreach(commit => {
-          client.process(commit.url)(filesParser)
-        })
-      } catch {
-        case de: spray.json.DeserializationException =>
-          val errorMsg = JsonParser(httpResponse.entity.asString).convertTo[BadCredentials]
-          logger ! Error(s"${errorMsg.message}, read ${errorMsg.documentation_url}")
+    private def commitsParser: (HttpResponse) => Unit = {
+      httpResponse => {
+        try {
+          val commits: List[commit] = JsonParser(httpResponse.entity.asString).convertTo[List[commit]]
+          commits.foreach(commit => {
+            client.process(commit.url)(filesParser)
+          })
+        } catch {
+          case de: spray.json.DeserializationException =>
+            val errorMsg = JsonParser(httpResponse.entity.asString).convertTo[BadCredentials]
+            logger ! Error(s"${errorMsg.message}, read ${errorMsg.documentation_url}")
+        }
       }
     }
 
@@ -88,18 +92,21 @@ object GithubBot {
     private def filesParser(httpResponse: HttpResponse): Unit = {
       val jsonResult: JsValue = JsonParser(httpResponse.entity.asString)
       val files = jsonResult.convertTo[files]
+      def parser: (fileDetail) => Unit = {
+        x => {
+          CommitHistory.isProcessed(x.filename, files.sha) match {
+            case false =>
+              val content_url = "https://raw.githubusercontent.com/%s/master/%s".format(repo, x.filename)
+              val writer = write(x.filename, files.sha, files.commit.author.date, files.commit.author.name) _
+              client.process(content_url)(writer)
+            case _ => ()
+          }
+        }
+      }
       files.details.filter(fileInfo => {
         // TODO: remove file marked as removed
         fileInfo.filename.endsWith(".md") && fileInfo.status != "removed"
-      }).foreach(x => {
-        CommitHistory.isProcessed(x.filename, files.sha) match {
-          case false =>
-            val content_url = "https://raw.githubusercontent.com/%s/master/%s".format(repo, x.filename)
-            val writer = write(x.filename, files.sha, files.commit.author.date, files.commit.author.name) _
-            client.process(content_url)(writer)
-          case _ => ()
-        }
-      })
+      }).foreach(parser)
     }
 
     def crawl(url: String = commitsUrl): Unit = {
