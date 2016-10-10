@@ -4,7 +4,7 @@ package com.pcdn.model
   * Created by Hung on 9/15/16.
   */
 
-import akka.actor.{Actor, ActorSystem, Props}
+import akka.actor.{Actor, Props}
 import akka.event.Logging
 
 
@@ -13,7 +13,7 @@ case class Info(msg: String)
 case class Error(msg: String)
 
 object Logger {
-  val logger = ActorSystem.create.actorOf(Props[Logger])
+  val logger = TinyActor.getSystem().actorOf(Props[Logger])
 }
 
 class Logger extends Actor {

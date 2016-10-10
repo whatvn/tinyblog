@@ -1,8 +1,9 @@
 package com.pcdn.model
 
-import akka.actor.{Actor, ActorSystem, Props}
+import akka.actor.{Actor, Props}
 import com.pcdn.model.github.GithubBot
 import com.pcdn.model.utils.Settings
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 
@@ -11,9 +12,8 @@ import scala.concurrent.duration._
   */
 object Crawler extends Settings {
 
-  val actorSystem = ActorSystem()
-  val ghActor = ActorSystem().actorOf(Props(new Crawler), "crawler")
-  val scheduler = actorSystem.scheduler.schedule(2 seconds, 60 seconds, ghActor, "crawl")
+  val ghActor = TinyActor.getSystem().actorOf(Props(new Crawler), "crawler")
+  val scheduler = TinyActor.getSystem().scheduler.schedule(2 seconds, 60 seconds, ghActor, "crawl")
 
   val bot = GithubBot(githubUsername, githubToken, githubRepo)
 

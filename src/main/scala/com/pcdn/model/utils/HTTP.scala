@@ -1,6 +1,5 @@
 package com.pcdn.model.utils
 
-import akka.actor.ActorSystem
 import akka.io.IO
 import akka.pattern.ask
 import com.pcdn.model._
@@ -23,7 +22,7 @@ object HttpClient extends Settings {
 
 
   class HttpClient(val user: String, val token: String) {
-    implicit val system = ActorSystem("github-api-client")
+    implicit val system = TinyActor.getSystem()
     implicit val timeout = 5.seconds
     private val credential: RequestTransformer = addCredentials(BasicHttpCredentials(user, token))
 //    val pipeLineMap = Map.empty[String, Future[SendReceive]]

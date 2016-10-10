@@ -54,8 +54,7 @@ object BlogMetadata {
   def isSet(fileId: String): Boolean = blogMetadata.containsKey(Hash.toHexString(fileId))
 
   def get(fileId: String): Option[BlogMetadata] = {
-    val bm = blogMetadata.get(Hash.toHexString(fileId))
-    bm match {
+    blogMetadata.get(Hash.toHexString(fileId)) match {
       case Array(title, author, updateTime, desc, url) => Some(BlogMetadata(title.toString, author.toString, updateTime.toString, desc.toString, url.toString))
       case _ => None
     }

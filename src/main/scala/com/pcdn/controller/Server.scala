@@ -1,10 +1,10 @@
 package com.pcdn.controller
 
-import akka.actor.{ActorSystem, Props}
+import akka.actor.Props
 import akka.io.IO
 import akka.pattern.ask
 import akka.util.Timeout
-import com.pcdn.model.Crawler
+import com.pcdn.model.{Crawler, TinyActor}
 import spray.can.Http
 
 import scala.concurrent.duration._
@@ -19,10 +19,8 @@ object Server {
     // start worker to update blog content
     Crawler.start
 
-    implicit val system = ActorSystem("tinyEngine")
-
+    implicit val system = TinyActor.getSystem()
     lazy val service = system.actorOf(Props[ServiceImplement], "blogService")
-
     implicit val timeout = Timeout(5.seconds)
 
     IO(Http)? Http.Bind(service, interface = System.getProperty("listen", "127.0.0.1"),
