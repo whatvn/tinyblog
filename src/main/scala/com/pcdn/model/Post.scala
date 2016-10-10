@@ -33,7 +33,7 @@ object Post extends Settings {
 
   def listPostFromDb(page: Int): List[BlogMetadata] = {
     // Github api return newest commit then the latter, so newest key will be at the last
-    BlogMetadata.listAll().reverse
+    BlogMetadata.listAll().sortWith(_.updateTime > _.updateTime)
   }
 
   def getTitle(input: String): String = TITLE_REGEX.findFirstIn(input) match {

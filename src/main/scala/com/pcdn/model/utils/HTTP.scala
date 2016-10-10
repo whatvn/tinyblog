@@ -26,8 +26,25 @@ object HttpClient extends Settings {
     implicit val system = ActorSystem("github-api-client")
     implicit val timeout = 5.seconds
     private val credential: RequestTransformer = addCredentials(BasicHttpCredentials(user, token))
+//    val pipeLineMap = Map.empty[String, Future[SendReceive]]
+
+
+//    def createPipeline(host: String): Future[SendReceive] =  {
+//        val pipeLine = for (
+//          Http.HostConnectorInfo(connector, _) <-
+//          IO(Http) ? Http.HostConnectorSetup(host, port = 80)
+//        ) yield sendReceive(connector)
+//        pipeLineMap.put(host, pipeLine)
+//        pipeLine
+//    }
+//
+//    def getPipeline(host: String) = {
+//      pipeLineMap.getOrElse(host, createPipeline(host))
+//    }
+
 
     def process(url: String)(op: HttpResponse => Unit) = {
+
       import system.dispatcher
       val pipeline = sendReceive
       val responseFuture = pipeline {
