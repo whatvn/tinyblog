@@ -26,5 +26,4 @@ object Server {
     IO(Http)? Http.Bind(service, interface = System.getProperty("listen", "127.0.0.1"),
       port =  System.getProperty("serverport", "8080").toInt, backlog = 1024)
   }
-
 }
