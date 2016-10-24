@@ -2,6 +2,7 @@ package com.pcdn.controller
 
 import akka.actor.Actor
 import akka.event.Logging
+import com.pcdn.model.TinyActor
 import spray.http.HttpRequest
 import spray.routing.directives.LogEntry
 
@@ -15,6 +16,8 @@ class ServiceImplement extends Actor
   with StaticResource
   with Index
   with About with RSS {
+
+  implicit val actorSystem = TinyActor.getSystem()
 
   override def actorRefFactory = context
 
