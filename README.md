@@ -1,8 +1,9 @@
 #tinyblog
 
-A simple blog engine written in scala with spray, bootstrap and github as storage. The following technologies are used to build this blogging engine:
+A simple blog engine written in scala with akka-http, bootstrap and github as storage. The following technologies are used to build this blogging engine:
 
-- Spray framework : Web server, routing, HTTP Client, Json deserializer, and caching use Spray library.
+- Akka-http as webserver and request routingr
+- Spray framework : HTTP Client, Json deserializer use Spray library.
 - Twirl : is a template engine to render HTML.
 - MapDB: an embedded high performance databased written in Krotlin (a another JVM based language) to store commit history and blog metadata.
 - Github: blog content was written in Markdown, then commit to Github under repository: http://github.com/whatvn/whatvn.github.io. There will be a worker (implemented inside blog engine to fetch data from Github and display content on this blog.
