@@ -1,6 +1,6 @@
 package com.pcdn.model.github
 
-import java.io.PrintWriter
+import java.io.{File, PrintWriter}
 
 import com.pcdn.model.Error
 import com.pcdn.model.Logger.logger
@@ -56,6 +56,8 @@ object GithubBot {
     }
 
     private def fileWriter(path: String, content: String) = {
+      val f = new File(path)
+      f.delete //no matter it's exist or not
       new PrintWriter(path) {
         write(content)
         close
