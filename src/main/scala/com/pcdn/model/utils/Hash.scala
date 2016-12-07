@@ -7,5 +7,6 @@ import scala.util.hashing.MurmurHash3
   */
 object Hash {
   def toLong(x: String) = MurmurHash3.stringHash(x).toLong
+
   def toHexString(x: String) = MurmurHash3.stringHash(x).toHexString
 }

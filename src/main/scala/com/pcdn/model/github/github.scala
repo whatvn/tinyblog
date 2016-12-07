@@ -14,6 +14,11 @@ import scala.language.implicitConversions
 
 object GithubBot {
 
+  def main(args: Array[String]): Unit = {
+    val bot = GithubBot("whatvn", "githubtoken", "whatvn/whatvn.github.io")
+    bot.crawl()
+  }
+
   def apply(username: String, token: String, repo: String) = {
     new GithubBot(username, token, repo)
   }
@@ -24,6 +29,10 @@ object GithubBot {
     val client = HttpClient(username, token)
 
     import JsonConversion._
+
+    def crawl(url: String = commitsUrl): Unit = {
+      client.process(url)(parsePaging)
+    }
 
     private def parsePaging(httpResponse: HttpResponse): Unit = {
       httpResponse.headers.filter(_.lowercaseName == "link") match {
@@ -83,7 +92,6 @@ object GithubBot {
       }
     }
 
-
     private def parseLinkHeader(linkHeader: String): Map[String, String] = (linkHeader.split(',') map { part: String =>
       val section = part.split(';')
       val url = section(0).replace("<", "").replace(">", "")
@@ -94,6 +102,7 @@ object GithubBot {
     private def filesParser(httpResponse: HttpResponse): Unit = {
       val jsonResult: JsValue = JsonParser(httpResponse.entity.asString)
       val files = jsonResult.convertTo[files]
+
       def parser: (fileDetail) => Unit = {
         x => {
           CommitHistory.isProcessed(x.filename, files.sha) match {
@@ -105,19 +114,11 @@ object GithubBot {
           }
         }
       }
+
       files.details.filter(fileInfo => {
         // TODO: remove file marked as removed
         fileInfo.filename.endsWith(".md") && fileInfo.status != "removed"
       }).foreach(parser)
     }
-
-    def crawl(url: String = commitsUrl): Unit = {
-      client.process(url)(parsePaging)
-    }
-  }
-
-  def main(args: Array[String]): Unit = {
-    val bot = GithubBot("whatvn", "githubtoken", "whatvn/whatvn.github.io")
-    bot.crawl()
   }
 }

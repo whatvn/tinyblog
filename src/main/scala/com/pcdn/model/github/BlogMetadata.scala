@@ -18,19 +18,9 @@ object BlogMetadata {
   implicit def anyToString(any: AnyRef) = any.toString
 
 
-
   private val blogMetadata: BTreeMap[String, Array[AnyRef]] = db.treeMap("blogMetadata").keySerializer(Serializer.STRING).
     valueSerializer(new SerializerArrayTuple(Serializer.STRING, Serializer.STRING, Serializer.STRING, Serializer.STRING, Serializer.STRING)).
     counterEnable().createOrOpen()
-
-
-  // companion object & class
-  class BlogMetadata(val title: String, val author: String, val updateTime: String, val desc: String, val url: String)
-
-  def apply(title: String, author: String, updateTime: String, desc: String, url: String) = {
-    new BlogMetadata(title, author, updateTime, desc, url)
-  }
-
 
   def listAll(): List[BlogMetadata] = {
     blogMetadata.getKeys.toList.map {
@@ -41,6 +31,9 @@ object BlogMetadata {
     }
   }
 
+  def apply(title: String, author: String, updateTime: String, desc: String, url: String) = {
+    new BlogMetadata(title, author, updateTime, desc, url)
+  }
 
   def put(fileId: String, metadata: BlogMetadata) = {
     val v = Array(metadata.title, metadata.author, metadata.updateTime, metadata.desc, metadata.url)
@@ -61,5 +54,8 @@ object BlogMetadata {
   }
 
   def size() = blogMetadata.getSize
+
+  // companion object & class
+  class BlogMetadata(val title: String, val author: String, val updateTime: String, val desc: String, val url: String)
 
 }

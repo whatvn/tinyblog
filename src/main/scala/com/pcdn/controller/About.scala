@@ -1,16 +1,19 @@
 package com.pcdn.controller
 
+import akka.http.scaladsl.model._
+import akka.http.scaladsl.server.Directives._
 import com.pcdn.model.utils.{Render, Settings}
-import spray.http.MediaTypes.{`text/html` => TEXTHTML}
-import spray.routing.HttpService
-
 
 /**
   * Created by Hung on 9/12/16.
   */
-trait About extends HttpService with Render with Settings {
+trait About extends Settings {
 
-  lazy val aboutPage = (get & compressResponse(compressResponseMagnet) & path("about.html")) {
-    renderHtml(respondWithMediaType(TEXTHTML), template = html.about.render())
+  lazy val aboutPage = get {
+    path("about.html") {
+      encodeResponse {
+        Render.renderHtml(ContentTypes.`text/html(UTF-8)`, template = html.about.render())
+      }
+    }
   }
 }

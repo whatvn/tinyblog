@@ -8,6 +8,7 @@ import akka.actor.ActorSystem
 object TinyActor {
 
   implicit private val system = ActorSystem("tinyEngine")
+
   def getSystem() = system
 
 }

@@ -23,8 +23,10 @@ object Crawler extends Settings {
     override def preStart(): Unit = {
       Logger.logger ! Info("Github crawler started")
     }
+
     override def receive: Receive = {
       case "crawl" => bot.crawl()
     }
   }
+
 }

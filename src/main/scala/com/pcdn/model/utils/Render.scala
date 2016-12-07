@@ -1,18 +1,20 @@
 package com.pcdn.model.utils
 
+import akka.http.scaladsl.server.Directives._
+import akka.http.scaladsl.model.ContentType.WithCharset
+import akka.http.scaladsl.model._
+import akka.http.scaladsl.server.StandardRoute
 import play.twirl.api.{HtmlFormat, XmlFormat}
-import spray.http.HttpHeaders.RawHeader
-import spray.routing._
 
 /**
   * Created by Hung on 9/10/16.
   */
-trait Render extends HttpService{
-  def renderHtml[T <: Directive0](responseType: T, template: HtmlFormat.Appendable): Route = responseType {
-    complete(template.toString)
+object Render {
+  def renderHtml[T <: WithCharset](responseType: T, template: HtmlFormat.Appendable): StandardRoute = {
+    complete(HttpEntity(responseType, template.toString))
   }
 
-  def renderXml[T <: Directive0](responseType: T, template: XmlFormat.Appendable): Route = responseType {
-    complete(template.toString.trim)
+  def renderXml[T <: WithCharset](responseType: T, template: XmlFormat.Appendable): StandardRoute = {
+    complete(HttpEntity(responseType, template.toString))
   }
 }

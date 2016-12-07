@@ -4,6 +4,7 @@ package com.pcdn.model.github
   * Created by Hung on 8/19/16.
   */
 case class files(sha: String, commit: commitInfo, details: List[fileDetail])
+
 case class fileDetail(sha: Option[String],
                       filename: String,
                       status: String,

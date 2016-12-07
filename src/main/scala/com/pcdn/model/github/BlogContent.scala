@@ -8,7 +8,7 @@ import org.mapdb.{BTreeMap, Serializer}
   */
 object BlogContent {
 
-  private val blogContent: BTreeMap[String, String] = db.treeMap("blogContent"). keySerializer(Serializer.STRING).
+  private val blogContent: BTreeMap[String, String] = db.treeMap("blogContent").keySerializer(Serializer.STRING).
     valueSerializer(Serializer.STRING).
     counterEnable().createOrOpen()
 

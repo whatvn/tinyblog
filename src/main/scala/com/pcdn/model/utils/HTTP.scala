@@ -25,21 +25,21 @@ object HttpClient extends Settings {
     implicit val system = TinyActor.getSystem()
     implicit val timeout = 5.seconds
     private val credential: RequestTransformer = addCredentials(BasicHttpCredentials(user, token))
-//    val pipeLineMap = Map.empty[String, Future[SendReceive]]
+    //    val pipeLineMap = Map.empty[String, Future[SendReceive]]
 
 
-//    def createPipeline(host: String): Future[SendReceive] =  {
-//        val pipeLine = for (
-//          Http.HostConnectorInfo(connector, _) <-
-//          IO(Http) ? Http.HostConnectorSetup(host, port = 80)
-//        ) yield sendReceive(connector)
-//        pipeLineMap.put(host, pipeLine)
-//        pipeLine
-//    }
-//
-//    def getPipeline(host: String) = {
-//      pipeLineMap.getOrElse(host, createPipeline(host))
-//    }
+    //    def createPipeline(host: String): Future[SendReceive] =  {
+    //        val pipeLine = for (
+    //          Http.HostConnectorInfo(connector, _) <-
+    //          IO(Http) ? Http.HostConnectorSetup(host, port = 80)
+    //        ) yield sendReceive(connector)
+    //        pipeLineMap.put(host, pipeLine)
+    //        pipeLine
+    //    }
+    //
+    //    def getPipeline(host: String) = {
+    //      pipeLineMap.getOrElse(host, createPipeline(host))
+    //    }
 
 
     def process(url: String)(op: HttpResponse => Unit) = {
@@ -57,11 +57,14 @@ object HttpClient extends Settings {
         case Failure(error) =>
           Logger.logger ! Error(s"Couldn't process url: $error")
       }
+
       def shutdown(): Unit = {
         IO(Http).ask(Http.CloseAll)(5.second).await
       }
     }
-    def close() = system.shutdown()
+
+    def close() = system.shutdown
   }
+
 }
 

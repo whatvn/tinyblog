@@ -21,10 +21,6 @@ object Post extends Settings {
   private final val TITLE_REGEX = "TITLE\\:.*".r
   private final val DESC_REGEX = "DESCRIPTION\\:.*".r
 
-  def apply(title: String, desc: String, content: Html, date: String, author: String): Post = {
-    new Post(title, desc, content, date, author)
-  }
-
   def listPost(id: String): Option[File] = {
     new File(dataDir + "/_posts").listFiles.find({
       x => x.getName.replaceAll(".md$", "") == id && x.isFile
@@ -46,16 +42,12 @@ object Post extends Settings {
     case Some(d) => d.replace("DESCRIPTION:", "")
   }
 
-  def toHtmlDocument(source: Iterator[String]) = Html(Markdown(5000).parseToHTML(source mkString "\n"))
-
-  def getPostDay(date: String) = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault).parse(date).toString
-
   def buildPost(f: File): Post = {
     val resource = Source.fromFile(f, "UTF-8")
     val src: Iterator[String] = resource.getLines()
     val title = src drop 0 next
     val desc = src drop 0 next
-    var (date, author) =  (DateTime.now.toIsoDateString, "Anonymous")
+    var (date, author) = (DateTime.now.toIsoDateString, "Anonymous")
     val content: Html = toHtmlDocument(src)
     BlogMetadata.get("_posts/" + f.getName) match {
       case Some(x) =>
@@ -66,6 +58,14 @@ object Post extends Settings {
     resource.close()
     Post(title.replace("TITLE:", ""), desc.replace("DESCRIPTION:", ""), content, date, author)
   }
+
+  def apply(title: String, desc: String, content: Html, date: String, author: String): Post = {
+    new Post(title, desc, content, date, author)
+  }
+
+  def toHtmlDocument(source: Iterator[String]) = Html(Markdown(5000).parseToHTML(source mkString "\n"))
+
+  def getPostDay(date: String) = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault).parse(date).toString
 }
 
 class Post(val title: String, val desc: String, val content: Html, val date: String, val author: String)

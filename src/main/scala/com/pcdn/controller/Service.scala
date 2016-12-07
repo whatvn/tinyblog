@@ -1,39 +1,21 @@
 package com.pcdn.controller
 
-import akka.actor.Actor
-import akka.event.Logging
-import com.pcdn.model.TinyActor
-import spray.http.HttpRequest
-import spray.routing.directives.LogEntry
-
-import scala.language.implicitConversions
+import akka.http.scaladsl.server.Directives._
+import akka.http.scaladsl.server.Route
 
 /**
   * Created by Hung on 8/15/16.
   */
-class ServiceImplement extends Actor
-  with SinglePost
-  with StaticResource
-  with Index
-  with About with RSS {
+object ServiceImplement
+  extends SinglePost
+    with StaticResource
+    with Index
+    with About with RSS {
+  val routes: Route = staticResources ~ indexPage ~
+    singlePost ~
+    aboutPage ~
+    rss
 
-  implicit val actorSystem = TinyActor.getSystem()
-
-  override def actorRefFactory = context
-
-  val log = Logging(context.system, this)
-
-  def showPath(req: HttpRequest) = LogEntry("Method = %s, Path = %s" format(req.method, req.uri), Logging.DebugLevel)
-
-  override def receive: Receive = runRoute {
-    logRequest(showPath _)(
-      staticResources ~
-        indexPage ~
-        singlePost ~
-        aboutPage ~
-        rss
-    )
-  }
 }
 
 

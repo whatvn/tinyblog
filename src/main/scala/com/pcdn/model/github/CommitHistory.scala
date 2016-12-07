@@ -17,7 +17,7 @@ import scala.language.implicitConversions
   */
 object CommitHistory {
 
-  private val commitHistory: BTreeMap[String, Array[Long]] = db.treeMap("commitHistory"). keySerializer(Serializer.STRING).
+  private val commitHistory: BTreeMap[String, Array[Long]] = db.treeMap("commitHistory").keySerializer(Serializer.STRING).
     valueSerializer(new SerializerLongArray()).
     counterEnable().
     createOrOpen()
@@ -36,6 +36,13 @@ object CommitHistory {
     }
   }
 
+  def isSet(fileId: String): Boolean = commitHistory.containsKey(Hash.toHexString(fileId))
+
+  def get(fileId: String): Option[Array[Long]] = commitHistory.get(Hash.toHexString(fileId)) match {
+    case null => None
+    case x => Some(x)
+  }
+
   def isProcessed(fileId: String, sha: String): Boolean = get(fileId) match {
     case None => false
     case Some(x) => x contains toLong(sha)
@@ -43,13 +50,5 @@ object CommitHistory {
 
   def del(fileId: String) = commitHistory.remove(Hash.toHexString(fileId))
 
-  def isSet(fileId: String): Boolean = commitHistory.containsKey(Hash.toHexString(fileId))
-
   def listAll() = commitHistory.getKeys()
-
-
-  def get(fileId: String): Option[Array[Long]] = commitHistory.get(Hash.toHexString(fileId)) match {
-    case null => None
-    case x => Some(x)
-  }
 }
