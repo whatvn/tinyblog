@@ -8,11 +8,11 @@
         <link>http://tinytechie.net</link>
         <description>Some(None)</description>
         @for(post <- posts) {
-        <item>
-            <title>@post.title</title>
-            <link>http://@domain/@post.url</link>
-            <description>@post.desc</description>
-        </item>
+            <item>
+                <title>@post.title</title>
+                <link>http://@domain/@post.url </link>
+                <description>@post.desc</description>
+            </item>
         }
     </channel>
 </rss>
