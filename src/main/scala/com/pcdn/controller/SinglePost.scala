@@ -17,7 +17,7 @@ trait SinglePost extends Settings {
     get {
       pathPrefix("_posts" / RemainingPath) { id =>
         Post.listPost(id.toString) match {
-          case Some(p) => Render.renderHtml(ContentTypes.`text/html(UTF-8)`, template = html.post.render(Post.buildPost(p)))
+          case Some(p) => Render.render(ContentTypes.`text/html(UTF-8)`, html.post.render(Post.buildPost(p)).toString)
           case _ => complete("Not found")
         }
       }

@@ -12,11 +12,9 @@ import com.pcdn.model.utils.{Render, Settings}
 trait Index extends Settings {
 
 
-  lazy val indexPage: Route = {
-    get {
+  lazy val indexPage: Route = get {
       pathEndOrSingleSlash {
-        Render.renderHtml(ContentTypes.`text/html(UTF-8)`, template = html.index.render(Post.listPostFromDb(1)))
+        Render.render(ContentTypes.`text/html(UTF-8)`, html.index.render(Post.listPostFromDb(1)).toString)
       }
     }
-  }
 }

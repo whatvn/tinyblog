@@ -2,17 +2,18 @@ package com.pcdn.controller
 
 import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
+import akka.http.scaladsl.server.Route
 import com.pcdn.model.utils.{Render, Settings}
-
+import scala.language.postfixOps
 /**
   * Created by Hung on 9/12/16.
   */
 trait About extends Settings {
 
-  lazy val aboutPage = get {
+  lazy val aboutPage: Route = get {
     path("about.html") {
       encodeResponse {
-        Render.renderHtml(ContentTypes.`text/html(UTF-8)`, template = html.about.render())
+        Render.render(ContentTypes.`text/html(UTF-8)`, html.about.render toString )
       }
     }
   }

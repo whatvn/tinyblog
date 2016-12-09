@@ -2,36 +2,56 @@ package com.pcdn.model.github
 
 import java.io.{File, PrintWriter}
 
-import com.pcdn.model.Error
+import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
+import akka.http.scaladsl.model.HttpResponse
+import akka.http.scaladsl.unmarshalling.Unmarshal
+import akka.stream.ActorMaterializer
 import com.pcdn.model.Logger.logger
 import com.pcdn.model.Post._
-import com.pcdn.model.utils.{HttpClient, Settings}
-import spray.http.HttpResponse
-import spray.json.{JsValue, JsonParser}
+import com.pcdn.model.utils.HttpClient
+import com.pcdn.model.{Error, Info, TinyActor}
 
+import scala.concurrent.Future
 import scala.language.implicitConversions
+import scala.util.{Failure, Success}
 
 
-object GithubBot {
+object GitHubBot {
+
+  implicit val system = TinyActor.getSystem()
+  implicit val materialize = ActorMaterializer()
+  import com.pcdn.model.github.JsonConversion._
+  import system.dispatcher
 
   def main(args: Array[String]): Unit = {
-    val bot = GithubBot("whatvn", "githubtoken", "whatvn/whatvn.github.io")
+    val bot = GitHubBot("whatvn", "githubtoken", "whatvn/whatvn.github.io")
     bot.crawl()
   }
 
   def apply(username: String, token: String, repo: String) = {
-    new GithubBot(username, token, repo)
+    new GitHubBot(username, token, repo)
   }
 
-  class GithubBot(val username: String, val token: String, val repo: String) extends Settings {
+  class GitHubBot(val username: String, val token: String, val repo: String)  {
     private final val url = "https://api.github.com/repos"
     private final val commitsUrl = "%s/%s/commits?path=_posts".format(url, repo)
+
     val client = HttpClient(username, token)
 
-    import JsonConversion._
 
     def crawl(url: String = commitsUrl): Unit = {
       client.process(url)(parsePaging)
+    }
+
+    private def react[T](futureObj: Future[T])(op: T => Unit)(fop: Throwable => Unit): Unit = {
+      futureObj onComplete {
+        case Success(v) => op(v)
+        case Failure(t) => fop(t)
+      }
+    }
+
+    def logErr(t: Throwable): Unit = {
+      logger ! Error(t.getMessage)
     }
 
     private def parsePaging(httpResponse: HttpResponse): Unit = {
@@ -49,23 +69,18 @@ object GithubBot {
       }
     }
 
-    private def commitsParser: (HttpResponse) => Unit = {
-      httpResponse => {
-        try {
-          val commits: List[commit] = JsonParser(httpResponse.entity.asString).convertTo[List[commit]]
-          commits.foreach(commit => {
-            client.process(commit.url)(filesParser)
-          })
-        } catch {
-          case de: spray.json.DeserializationException =>
-            val errorMsg = JsonParser(httpResponse.entity.asString).convertTo[BadCredentials]
-            logger ! Error(s"${errorMsg.message}, read ${errorMsg.documentation_url}")
-        }
-      }
+    private def commitsParser(r: HttpResponse) {
+      val bodyFuture: Future[List[commit]] = Unmarshal(r.entity).to[List[commit]]
+      react(bodyFuture)(commits =>
+        commits.foreach(commit => {
+          logger ! Info(commit.url)
+          client.process(commit.url)(filesParser)
+        }))(logErr)
     }
 
-    private def fileWriter(path: String, content: String) = {
+    private def fileWriter(path: String, content: String) {
       val f = new File(path)
+      new File(f.getParent).mkdirs()
       f.delete //no matter it's exist or not
       new PrintWriter(path) {
         write(content)
@@ -73,22 +88,19 @@ object GithubBot {
       }
     }
 
-    private def write(filename: String, sha: String, updateTime: String, author: String)(httpResponse: HttpResponse): Unit = {
-
+    private def write(filename: String, sha: String, updateTime: String, author: String)(r: HttpResponse): Unit = {
       val abspath = "%s/%s".format(dataDir, filename)
-      httpResponse.status.intValue match {
+      r.status.intValue match {
         case 200 =>
-          try {
             val url = filename.replaceAll(".md$", "")
-            val responseString = httpResponse.entity.asString
-            val metadata = BlogMetadata(getTitle(responseString), author, updateTime, getDesc(responseString), url)
-            BlogMetadata.put(filename, metadata)
-            fileWriter(abspath, httpResponse.entity.asString)
-            CommitHistory.update(filename, sha)
-          } catch {
-            case x: Throwable => logger ! Error(x.getMessage)
-          }
-        case _ =>
+            val bodyFuture: Future[String] = Unmarshal(r.entity).to[String]
+            react(bodyFuture)(x => {
+              val metadata = BlogMetadata(getTitle(x), author, updateTime, getDesc(x), url)
+              BlogMetadata.put(filename, metadata)
+              fileWriter(abspath, x)
+              CommitHistory.update(filename, sha)
+            })(logErr)
+        case x: Int => logger ! Error(r.headers.toString)
       }
     }
 
@@ -99,26 +111,22 @@ object GithubBot {
       name -> url
     }).toMap
 
-    private def filesParser(httpResponse: HttpResponse): Unit = {
-      val jsonResult: JsValue = JsonParser(httpResponse.entity.asString)
-      val files = jsonResult.convertTo[files]
-
-      def parser: (fileDetail) => Unit = {
-        x => {
+    private def filesParser(r: HttpResponse) {
+      val bodyFuture: Future[files] = Unmarshal(r.entity).to[files]
+      react(bodyFuture)(files => {
+        files.details.filter(fileInfo => {
+          // TODO: remove file marked as removed
+          fileInfo.filename.endsWith(".md") && fileInfo.status != "removed"
+        }).foreach(x => {
           CommitHistory.isProcessed(x.filename, files.sha) match {
             case false =>
               val content_url = "https://raw.githubusercontent.com/%s/master/%s".format(repo, x.filename)
               val writer = write(x.filename, files.sha, files.commit.author.date, files.commit.author.name) _
               client.process(content_url)(writer)
-            case _ => ()
+            case _ => logger ! Info(s"${files.sha} already processed")
           }
-        }
-      }
-
-      files.details.filter(fileInfo => {
-        // TODO: remove file marked as removed
-        fileInfo.filename.endsWith(".md") && fileInfo.status != "removed"
-      }).foreach(parser)
+        })
+      })(logErr)
     }
   }
 }

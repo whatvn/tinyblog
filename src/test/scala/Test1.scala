@@ -6,12 +6,11 @@
 trait A
 
 case class B(b: String) extends A
+
 case class C(c: String) extends A
 
 
-
 object Test1 {
-
 
 
   def main(args: Array[String]): Unit = {
@@ -20,7 +19,7 @@ object Test1 {
 
     val as = List(b, c)
 
-    val cs = as.fold(new B(""))((x, y) => new C("") )
+    val cs = as.fold(new B(""))((x, y) => new C(""))
 
   }
 

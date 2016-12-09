@@ -5,11 +5,11 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Locale
 
+import akka.http.scaladsl.model.DateTime
 import com.pcdn.model.github.BlogMetadata
 import com.pcdn.model.github.BlogMetadata.BlogMetadata
 import com.pcdn.model.utils.{Markdown, Settings}
 import play.twirl.api.Html
-import spray.http.DateTime
 
 import scala.io.Source
 import scala.language.postfixOps

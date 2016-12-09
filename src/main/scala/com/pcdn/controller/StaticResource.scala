@@ -20,7 +20,6 @@ trait StaticResource extends Settings {
         } ~
           pathPrefix("static" / RemainingPath) { path =>
             encodeResponse {
-              println(s"Get $path")
               getFromResource("static/%s" format path)
             }
           }

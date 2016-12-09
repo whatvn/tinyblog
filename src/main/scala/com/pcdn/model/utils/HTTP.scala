@@ -1,70 +1,46 @@
 package com.pcdn.model.utils
 
-import akka.io.IO
-import akka.pattern.ask
-import com.pcdn.model._
-import spray.can.Http
-import spray.client.pipelining._
-import spray.http.{BasicHttpCredentials, HttpResponse}
-import spray.util.pimpFuture
+import java.net.URL
 
-import scala.concurrent.duration._
-import scala.util.{Failure, Success}
+import akka.http.scaladsl.Http
+import akka.http.scaladsl.Http.OutgoingConnection
+import akka.http.scaladsl.model.headers.Authorization
+import akka.http.scaladsl.model.{HttpMethods, HttpRequest, HttpResponse, headers}
+import akka.stream.ActorMaterializer
+import akka.stream.scaladsl.{Flow, Sink, Source}
+import com.pcdn.model.TinyActor
+
+import scala.concurrent.Future
 
 
 /**
   * Created by Hung on 8/19/16.
   */
 
-object HttpClient extends Settings {
+object HttpClient {
 
   def apply(user: String, token: String) = new HttpClient(user, token)
 
-
   class HttpClient(val user: String, val token: String) {
+
+    val authorization = List(Authorization(headers.BasicHttpCredentials(user, token)))
     implicit val system = TinyActor.getSystem()
-    implicit val timeout = 5.seconds
-    private val credential: RequestTransformer = addCredentials(BasicHttpCredentials(user, token))
-    //    val pipeLineMap = Map.empty[String, Future[SendReceive]]
-
-
-    //    def createPipeline(host: String): Future[SendReceive] =  {
-    //        val pipeLine = for (
-    //          Http.HostConnectorInfo(connector, _) <-
-    //          IO(Http) ? Http.HostConnectorSetup(host, port = 80)
-    //        ) yield sendReceive(connector)
-    //        pipeLineMap.put(host, pipeLine)
-    //        pipeLine
-    //    }
-    //
-    //    def getPipeline(host: String) = {
-    //      pipeLineMap.getOrElse(host, createPipeline(host))
-    //    }
+    implicit val materialize = ActorMaterializer()
 
 
     def process(url: String)(op: HttpResponse => Unit) = {
-
-      import system.dispatcher
-      val pipeline = sendReceive
-      val responseFuture = pipeline {
-        Get(url) ~> credential
-      }
-      responseFuture onComplete {
-        case Success(response) => {
-          Logger.logger ! s"got status: $response"
-          op(response)
-        }
-        case Failure(error) =>
-          Logger.logger ! Error(s"Couldn't process url: $error")
-      }
-
-      def shutdown(): Unit = {
-        IO(Http).ask(Http.CloseAll)(5.second).await
+      val fullUrl = new URL(url)
+      val host = fullUrl.getHost
+      val path = fullUrl.getFile
+      val connectionFlow: Flow[HttpRequest, HttpResponse, Future[OutgoingConnection]] = Http().outgoingConnectionHttps(host)
+      makeRequest(path, op)
+      def makeRequest(uri: String, op: (HttpResponse) => Unit): Unit = {
+        Source.single(HttpRequest(method = HttpMethods.GET, uri = uri, headers = authorization))
+          .via(connectionFlow)
+          .map(op)
+          .runWith(Sink.head)
       }
     }
-
-    def close() = system.shutdown
   }
-
 }
 
