@@ -43,14 +43,14 @@ object GitHubBot {
       client.process(url)(parsePaging)
     }
 
-    private def react[T](futureObj: Future[T])(op: T => Unit)(fop: Throwable => Unit): Unit = {
+    private def react[T](futureObj: Future[T])(op: T => Unit)(implicit fop: Throwable => Unit): Unit = {
       futureObj onComplete {
         case Success(v) => op(v)
         case Failure(t) => fop(t)
       }
     }
 
-    def logErr(t: Throwable): Unit = {
+    implicit def logErr(t: Throwable): Unit = {
       logger ! Error(t.getMessage)
     }
 
@@ -75,7 +75,7 @@ object GitHubBot {
         commits.foreach(commit => {
           logger ! Info(commit.url)
           client.process(commit.url)(filesParser)
-        }))(logErr)
+        }))
     }
 
     private def fileWriter(path: String, content: String) {
@@ -99,7 +99,7 @@ object GitHubBot {
               BlogMetadata.put(filename, metadata)
               fileWriter(abspath, x)
               CommitHistory.update(filename, sha)
-            })(logErr)
+            })
         case x: Int => logger ! Error(r.headers.toString)
       }
     }
@@ -126,7 +126,7 @@ object GitHubBot {
             case _ => logger ! Info(s"${files.sha} already processed")
           }
         })
-      })(logErr)
+      })
     }
   }
 }
