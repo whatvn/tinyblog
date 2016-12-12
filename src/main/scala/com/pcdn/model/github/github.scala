@@ -117,16 +117,18 @@ object GitHubBot {
         files.details.filter(fileInfo => {
           // TODO: remove file marked as removed
           fileInfo.filename.endsWith(".md") && fileInfo.status != "removed"
-        }).foreach(x => {
-          CommitHistory.isProcessed(x.filename, files.sha) match {
-            case false =>
-              val content_url = "https://raw.githubusercontent.com/%s/master/%s".format(repo, x.filename)
-              val writer = write(x.filename, files.sha, files.commit.author.date, files.commit.author.name) _
-              client.process(content_url)(writer)
-            case _ => logger ! Info(s"${files.sha} already processed")
-          }
-        })
+        }).foreach(fd => update(fd, files))
       })
+    }
+
+    private def update(fd: fileDetail, fs: files) = {
+        CommitHistory isProcessed(fd.filename, fs.sha) match {
+          case false =>
+            val content_url = "https://raw.githubusercontent.com/%s/master/%s".format(repo, fd.filename)
+            val writer = write(fd.filename, fs.sha, fs.commit.author.date, fs.commit.author.name) _
+            client.process(content_url)(writer)
+          case _ => logger ! Info(s"${fs.sha} already processed")
+        }
     }
   }
 }

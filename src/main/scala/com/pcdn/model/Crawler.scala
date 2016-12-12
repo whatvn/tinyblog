@@ -13,12 +13,13 @@ import scala.language.postfixOps
   */
 object Crawler extends Settings {
 
-  val ghActor = TinyActor.getSystem().actorOf(Props(new Crawler), "crawler")
-  val scheduler = TinyActor.getSystem().scheduler.schedule(2 seconds, 60 seconds, ghActor, "crawl")
+  private val ghActor = TinyActor.getSystem().actorOf(Props(new Crawler), "crawler")
+
+  TinyActor.getSystem().scheduler.schedule(2 seconds, 60 seconds, ghActor, "crawl")
 
   val bot = GitHubBot(githubUsername, githubToken, githubRepo)
 
-  def start() = ()
+  def start(): Unit = ()
 
   class Crawler extends Actor {
     override def preStart(): Unit = {

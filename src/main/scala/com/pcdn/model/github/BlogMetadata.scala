@@ -15,7 +15,7 @@ import scala.language.implicitConversions
   */
 object BlogMetadata {
 
-  implicit def anyToString(any: AnyRef) = any.toString
+  implicit def anyToString(any: AnyRef): String = any.toString
 
 
   private val blogMetadata: BTreeMap[String, Array[AnyRef]] = db.treeMap("blogMetadata").keySerializer(Serializer.STRING).
@@ -31,7 +31,7 @@ object BlogMetadata {
     }
   }
 
-  def apply(title: String, author: String, updateTime: String, desc: String, url: String) = {
+  def apply(title: String, author: String, updateTime: String, desc: String, url: String): BlogMetadata = {
     new BlogMetadata(title, author, updateTime, desc, url)
   }
 
