@@ -43,7 +43,10 @@ object Post extends Settings {
     case Some(d) => d.replace("DESCRIPTION:", "")
   }
 
-  def getTags(input: String): Option[String] = TAGS_REGEX.findFirstIn(input)
+  def getTags(input: String): Option[String] = TAGS_REGEX.findFirstIn(input) match {
+    case None => None
+    case Some(t) => Some(t.replace("TAGS:", ""))
+  }
 
   def buildPost(f: File): Post = {
     val resource = Source.fromFile(f, "UTF-8")
