@@ -15,7 +15,7 @@ object Crawler extends Settings {
 
   private val ghActor = TinyActor.getSystem().actorOf(Props(new Crawler), "crawler")
 
-  TinyActor.getSystem().scheduler.schedule(2 seconds, 60 seconds, ghActor, "crawl")
+  TinyActor.getSystem().scheduler.schedule(2 seconds, 600 seconds, ghActor, "crawl")
 
   val bot = GitHubBot(githubUsername, githubToken, githubRepo)
 

@@ -10,11 +10,11 @@ object ServiceImplement
   extends SinglePost
     with StaticResource
     with Index
-    with About with RSS {
+    with About with RSS with Tag {
   val routes: Route = staticResources ~ indexPage ~
     singlePost ~
     aboutPage ~
-    rss
+    rss ~ tag
 
 }
 

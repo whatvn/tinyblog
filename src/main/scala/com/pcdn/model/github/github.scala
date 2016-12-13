@@ -92,14 +92,17 @@ object GitHubBot {
       val abspath = "%s/%s".format(dataDir, filename)
       r.status.intValue match {
         case 200 =>
-          val url = filename.replaceAll(".md$", "")
+          val url = s"/${filename.replaceAll(".md$", "")}"
           val bodyFuture: Future[String] = Unmarshal(r.entity).to[String]
           react(bodyFuture)(x => {
             val metadata = BlogMetadata(getTitle(x), author, updateTime, getDesc(x), url)
             BlogMetadata.put(filename, metadata)
             fileWriter(abspath, x)
             CommitHistory.update(filename, sha)
-            getTags(x).foreach(s => updateTags(s, url))
+            getTags(x) match {
+              case Some(s) => updateTags(s, filename)
+              case _ => ()
+            }
           })
         case x: Int => logger ! Error(r.headers.toString)
       }
@@ -133,7 +136,7 @@ object GitHubBot {
     private def updateTags(ts: String, url: String) {
       import tagsArray.StringToArray
       ts.split(",").foreach(x => {
-        Tags.put(x, url)
+        Tags.put(x.trim, url)
       })
     }
   }

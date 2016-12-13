@@ -50,6 +50,8 @@ object Post extends Settings {
     val src: Iterator[String] = resource.getLines()
     val title = src drop 0 next
     val desc = src drop 0 next
+    // TODO: markup html for tag, for now just remove tags from post
+    val tags = src drop 0 next
     var (date, author) = (DateTime.now.toIsoDateString, "Anonymous")
     val content: Html = toHtmlDocument(src)
     BlogMetadata.get("_posts/" + f.getName) match {
