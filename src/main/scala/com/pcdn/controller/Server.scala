@@ -7,6 +7,7 @@ import akka.stream.ActorMaterializer
 import com.pcdn.model.{Crawler, TinyActor}
 
 import scala.concurrent.Future
+import scala.util.{Failure, Success}
 
 
 /**
@@ -25,6 +26,9 @@ object Server {
     val port = System.getProperty("serverport", "8080").toInt
     val bindingFuture: Future[ServerBinding] = Http().bindAndHandle(Route.handlerFlow(ServiceImplement.routes), host, port)
 
-    println(s"Server online at $host:$port \n")
+    bindingFuture.onComplete {
+      case Success(_) => println(s"Server online at $host:$port \n")
+      case Failure(t) => println(s"Server cannot start, ${t.getMessage}\n")
+    }
   }
 }

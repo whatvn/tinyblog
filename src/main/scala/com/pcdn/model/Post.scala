@@ -20,6 +20,7 @@ import scala.language.postfixOps
 object Post extends Settings {
   private final val TITLE_REGEX = "TITLE\\:.*".r
   private final val DESC_REGEX = "DESCRIPTION\\:.*".r
+  private final val TAGS_REGEX = "TAGS\\:.*".r
 
   def listPost(id: String): Option[File] = {
     new File(dataDir + "/_posts").listFiles.find({
@@ -41,6 +42,8 @@ object Post extends Settings {
     case None => ""
     case Some(d) => d.replace("DESCRIPTION:", "")
   }
+
+  def getTags(input: String): Option[String] = TAGS_REGEX.findFirstIn(input)
 
   def buildPost(f: File): Post = {
     val resource = Source.fromFile(f, "UTF-8")

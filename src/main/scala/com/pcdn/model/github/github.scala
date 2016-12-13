@@ -20,6 +20,7 @@ object GitHubBot {
 
   implicit val system = TinyActor.getSystem()
   implicit val materialize = ActorMaterializer()
+
   import com.pcdn.model.github.JsonConversion._
   import system.dispatcher
 
@@ -32,7 +33,7 @@ object GitHubBot {
     new GitHubBot(username, token, repo)
   }
 
-  class GitHubBot(val username: String, val token: String, val repo: String)  {
+  class GitHubBot(val username: String, val token: String, val repo: String) {
     private final val url = "https://api.github.com/repos"
     private final val commitsUrl = "%s/%s/commits?path=_posts".format(url, repo)
 
@@ -54,20 +55,19 @@ object GitHubBot {
       logger ! Error(t.getMessage)
     }
 
-    private def parsePaging(httpResponse: HttpResponse): Unit = {
-      httpResponse.headers.filter(_.lowercaseName == "link") match {
-        case Nil => commitsParser(httpResponse)
-        case x :: Nil =>
-          val paging = parseLinkHeader(x.value)
-          paging.get("next") match {
-            case Some(s) =>
-              crawl(s)
-              commitsParser(httpResponse)
-            case _ => commitsParser(httpResponse)
-          }
-        case List(_, _) => ()
-      }
+    private def parsePaging(httpResponse: HttpResponse): Unit = httpResponse.headers.filter(_.lowercaseName == "link") match {
+      case Nil => commitsParser(httpResponse)
+      case x :: Nil =>
+        val paging = parseLinkHeader(x.value)
+        paging.get("next") match {
+          case Some(s) =>
+            crawl(s)
+            commitsParser(httpResponse)
+          case _ => commitsParser(httpResponse)
+        }
+      case List(_, _) => ()
     }
+
 
     private def commitsParser(r: HttpResponse) {
       val bodyFuture: Future[List[commit]] = Unmarshal(r.entity).to[List[commit]]
@@ -92,14 +92,15 @@ object GitHubBot {
       val abspath = "%s/%s".format(dataDir, filename)
       r.status.intValue match {
         case 200 =>
-            val url = filename.replaceAll(".md$", "")
-            val bodyFuture: Future[String] = Unmarshal(r.entity).to[String]
-            react(bodyFuture)(x => {
-              val metadata = BlogMetadata(getTitle(x), author, updateTime, getDesc(x), url)
-              BlogMetadata.put(filename, metadata)
-              fileWriter(abspath, x)
-              CommitHistory.update(filename, sha)
-            })
+          val url = filename.replaceAll(".md$", "")
+          val bodyFuture: Future[String] = Unmarshal(r.entity).to[String]
+          react(bodyFuture)(x => {
+            val metadata = BlogMetadata(getTitle(x), author, updateTime, getDesc(x), url)
+            BlogMetadata.put(filename, metadata)
+            fileWriter(abspath, x)
+            CommitHistory.update(filename, sha)
+            getTags(x).foreach(s => updateTags(s, url))
+          })
         case x: Int => logger ! Error(r.headers.toString)
       }
     }
@@ -121,14 +122,22 @@ object GitHubBot {
       })
     }
 
-    private def update(fd: fileDetail, fs: files) = {
-        CommitHistory isProcessed(fd.filename, fs.sha) match {
-          case false =>
-            val content_url = "https://raw.githubusercontent.com/%s/master/%s".format(repo, fd.filename)
-            val writer = write(fd.filename, fs.sha, fs.commit.author.date, fs.commit.author.name) _
-            client.process(content_url)(writer)
-          case _ => logger ! Info(s"${fs.sha} already processed")
-        }
+    private def update(fd: fileDetail, fs: files) = CommitHistory isProcessed(fd.filename, fs.sha) match {
+      case false =>
+        val content_url = "https://raw.githubusercontent.com/%s/master/%s".format(repo, fd.filename)
+        val writer = write(fd.filename, fs.sha, fs.commit.author.date, fs.commit.author.name) _
+        client.process(content_url)(writer)
+      case _ => logger ! Info(s"${fs.sha} already processed")
+    }
+
+    private def updateTags(ts: String, url: String) {
+      import tagsArray.StringToArray
+      ts.split(",").foreach(x => {
+        Tags.put(x, url)
+      })
     }
   }
+
+
+
 }

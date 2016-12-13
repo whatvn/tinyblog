@@ -2,7 +2,6 @@ package com.pcdn.model.github
 
 import com.pcdn.model.Database._
 import com.pcdn.model.utils.Hash
-import com.pcdn.model.utils.Hash.toLong
 import org.mapdb.serializer.SerializerLongArray
 import org.mapdb.{BTreeMap, Serializer}
 
@@ -15,7 +14,7 @@ import scala.language.implicitConversions
   * when a new commit is retrieve, bot will check if commit sha is available in this array
   * if it's not available download file, put commit sha to this map
   */
-object CommitHistory {
+object CommitHistory extends Hash {
 
   private val commitHistory: BTreeMap[String, Array[Long]] = db.treeMap("commitHistory").keySerializer(Serializer.STRING).
     valueSerializer(new SerializerLongArray()).
@@ -25,7 +24,7 @@ object CommitHistory {
 
   def update(fileId: String, sha: String) = {
     val v = Array(toLong(sha))
-    val k = Hash.toHexString(fileId)
+    val k = toHexString(fileId)
     isSet(fileId) match {
       case true =>
         get(fileId) match {
@@ -36,9 +35,9 @@ object CommitHistory {
     }
   }
 
-  def isSet(fileId: String): Boolean = commitHistory.containsKey(Hash.toHexString(fileId))
+  def isSet(fileId: String): Boolean = commitHistory.containsKey(toHexString(fileId))
 
-  def get(fileId: String): Option[Array[Long]] = commitHistory.get(Hash.toHexString(fileId)) match {
+  def get(fileId: String): Option[Array[Long]] = commitHistory.get(toHexString(fileId)) match {
     case null => None
     case x => Some(x)
   }
@@ -48,7 +47,7 @@ object CommitHistory {
     case Some(x) => x contains toLong(sha)
   }
 
-  def del(fileId: String) = commitHistory.remove(Hash.toHexString(fileId))
+  def del(fileId: String) = commitHistory.remove(toHexString(fileId))
 
   def listAll() = commitHistory.getKeys()
 }

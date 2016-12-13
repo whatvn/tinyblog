@@ -13,7 +13,7 @@ import scala.language.implicitConversions
   * key: stringHash(fileName)
   * value (title, author, updateTime, desc, url)
   */
-object BlogMetadata {
+object BlogMetadata extends Hash {
 
   implicit def anyToString(any: AnyRef): String = any.toString
 
@@ -37,17 +37,17 @@ object BlogMetadata {
 
   def put(fileId: String, metadata: BlogMetadata) = {
     val v = Array(metadata.title, metadata.author, metadata.updateTime, metadata.desc, metadata.url)
-    val k = Hash.toHexString(fileId)
+    val k = toHexString(fileId)
     isSet(fileId) match {
       case false => blogMetadata.put(k, v.map(_.toString))
       case _ => blogMetadata.replace(k, v.map(_.toString))
     }
   }
 
-  def isSet(fileId: String): Boolean = blogMetadata.containsKey(Hash.toHexString(fileId))
+  def isSet(fileId: String): Boolean = blogMetadata.containsKey(toHexString(fileId))
 
   def get(fileId: String): Option[BlogMetadata] = {
-    blogMetadata.get(Hash.toHexString(fileId)) match {
+    blogMetadata.get(toHexString(fileId)) match {
       case Array(title, author, updateTime, desc, url) => Some(BlogMetadata(title.toString, author.toString, updateTime.toString, desc.toString, url.toString))
       case _ => None
     }
