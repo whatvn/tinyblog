@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 import akka.http.scaladsl.model.DateTime
-import com.pcdn.model.github.BlogMetadata
+import com.pcdn.model.github.{BlogMetadata, Tags}
 import com.pcdn.model.github.BlogMetadata.BlogMetadata
 import com.pcdn.model.utils.{Markdown, Settings}
 import play.twirl.api.Html
@@ -64,16 +64,24 @@ object Post extends Settings {
       case _ => ()
     }
     resource.close()
-    Post(title.replace("TITLE:", ""), desc.replace("DESCRIPTION:", ""), content, date, author)
+    Post(title.replace("TITLE:", ""), desc.replace("DESCRIPTION:", ""), content, date, author, tags.replace("TAGS:", "").split(",").map(_.trim).toList)
   }
 
-  def apply(title: String, desc: String, content: Html, date: String, author: String): Post = {
-    new Post(title, desc, content, date, author)
+  def apply(title: String, desc: String, content: Html, date: String, author: String, tags: List[String]): Post = {
+    new Post(title, desc, content, date, author, tags)
   }
 
   def toHtmlDocument(source: Iterator[String]) = Html(Markdown(5000).parseToHTML(source mkString "\n"))
 
   def getPostDay(date: String) = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault).parse(date).toString
+
+  def retrieveTagInfo(tagStr: String): List[BlogMetadata] = Tags.get(tagStr) match {
+    case Some(p) =>
+      p.map(BlogMetadata.get).filter(_.isDefined).map {
+        case Some(m) => m
+      }.toList
+    case _ => Nil
+  }
 }
 
-class Post(val title: String, val desc: String, val content: Html, val date: String, val author: String)
+class Post(val title: String, val desc: String, val content: Html, val date: String, val author: String, val tags: List[String])

@@ -51,6 +51,6 @@ object Tags extends Hash {
 
   def getAll() {
     val a = tagsMap.getKeys.iterator()
-    while (a.hasNext) println(a.next())
+    while (a.hasNext) println(a.next)
   }
 }

@@ -51,7 +51,7 @@ object GitHubBot {
       }
     }
 
-    implicit def logErr(t: Throwable): Unit = {
+    implicit private def logErr(t: Throwable): Unit = {
       logger ! Error(t.getMessage)
     }
 
@@ -104,7 +104,7 @@ object GitHubBot {
               case _ => ()
             }
           })
-        case x: Int => logger ! Error(r.headers.toString)
+        case _ => logger ! Error(r.headers.toString)
       }
     }
 
@@ -140,7 +140,4 @@ object GitHubBot {
       })
     }
   }
-
-
-
 }
