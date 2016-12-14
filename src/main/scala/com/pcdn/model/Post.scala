@@ -54,7 +54,9 @@ object Post extends Settings {
     val title = src drop 0 next
     val desc = src drop 0 next
     // TODO: markup html for tag, for now just remove tags from post
-    val tags = src drop 0 next
+    val tags = {
+      src drop 0 next
+    }.replace("TAGS:", "").split(",").map(_.trim).filter(_!="").toList
     var (date, author) = (DateTime.now.toIsoDateString, "Anonymous")
     val content: Html = toHtmlDocument(src)
     BlogMetadata.get("_posts/" + f.getName) match {
@@ -64,7 +66,7 @@ object Post extends Settings {
       case _ => ()
     }
     resource.close()
-    Post(title.replace("TITLE:", ""), desc.replace("DESCRIPTION:", ""), content, date, author, tags.replace("TAGS:", "").split(",").map(_.trim).toList)
+    Post(title.replace("TITLE:", ""), desc.replace("DESCRIPTION:", ""), content, date, author, tags)
   }
 
   def apply(title: String, desc: String, content: Html, date: String, author: String, tags: List[String]): Post = {
