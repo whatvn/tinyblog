@@ -1,6 +1,5 @@
 package com.pcdn.controller
 
-import akka.http.scaladsl.model._
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import com.pcdn.model.utils.Settings
@@ -14,13 +13,11 @@ trait StaticResource extends Settings {
     get {
       {
         path("favicon.ico") {
-          encodeResponse {
-            complete(StatusCodes.NotFound)
-          }
+          getFromFile(s"$staticDir/img/favicon.ico")
         } ~
           pathPrefix("static" / RemainingPath) { path =>
             encodeResponse {
-              getFromResource("static/%s" format path)
+              getFromFile(s"$staticDir/%s" format path)
             }
           }
       }

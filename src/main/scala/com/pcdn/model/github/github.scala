@@ -2,7 +2,6 @@ package com.pcdn.model.github
 
 import java.io.{File, PrintWriter}
 
-import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 import akka.http.scaladsl.model.HttpResponse
 import akka.http.scaladsl.unmarshalling.Unmarshal
 import akka.stream.ActorMaterializer
@@ -95,8 +94,12 @@ object GitHubBot {
           val url = s"/${filename.replaceAll(".md$", "")}"
           val bodyFuture: Future[String] = Unmarshal(r.entity).to[String]
           react(bodyFuture)(x => {
-            val metadata = BlogMetadata(getTitle(x), author, updateTime, getDesc(x), url)
-            BlogMetadata.put(filename, metadata)
+            val title = getTitle(x)
+            // untitled post will not get into db
+            if (title.trim.toLowerCase != "about" && title.trim.toLowerCase != "untitled"  ) {
+              val metadata = BlogMetadata(title, author, updateTime, getDesc(x), url)
+              BlogMetadata.put(filename, metadata)
+            }
             fileWriter(abspath, x)
             CommitHistory.update(filename, sha)
             getTags(x) match {
@@ -140,4 +143,5 @@ object GitHubBot {
       })
     }
   }
+
 }

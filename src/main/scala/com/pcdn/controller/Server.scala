@@ -4,6 +4,7 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.Http.ServerBinding
 import akka.http.scaladsl.server.Route
 import akka.stream.ActorMaterializer
+import com.pcdn.model.github.GitHubBot
 import com.pcdn.model.{Crawler, TinyActor}
 
 import scala.concurrent.Future

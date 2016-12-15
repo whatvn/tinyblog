@@ -15,7 +15,7 @@ trait Tag {
       pathPrefix("tag" / RemainingPath) { id =>
           Post.retrieveTagInfo(id.toString) match {
             case Nil => redirect("/", StatusCodes.Found)
-            case ms: List[BlogMetadata.BlogMetadata] => Producer.response(ContentTypes.`text/html(UTF-8)`, html.tag.render(ms).toString)
+            case ms: List[BlogMetadata] => Producer.response(ContentTypes.`text/html(UTF-8)`, html.tag.render(ms).toString)
         }
       }
     }

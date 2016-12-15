@@ -13,6 +13,9 @@ import scala.language.implicitConversions
   * key: stringHash(fileName)
   * value (title, author, updateTime, desc, url)
   */
+case class BlogMetadata(title: String, author: String, updateTime: String, desc: String, url: String)
+case class metadataList(items: List[BlogMetadata])
+
 object BlogMetadata extends Hash {
 
   implicit def anyToString(any: AnyRef): String = any.toString
@@ -29,10 +32,6 @@ object BlogMetadata extends Hash {
           case Array(title, author, updateTime, desc, url) => BlogMetadata(title, author, updateTime, desc, url)
         }
     }
-  }
-
-  def apply(title: String, author: String, updateTime: String, desc: String, url: String): BlogMetadata = {
-    new BlogMetadata(title, author, updateTime, desc, url)
   }
 
   def put(fileId: String, metadata: BlogMetadata) = {
@@ -55,7 +54,5 @@ object BlogMetadata extends Hash {
 
   def size() = blogMetadata.getSize
 
-  // companion object & class
-  class BlogMetadata(val title: String, val author: String, val updateTime: String, val desc: String, val url: String)
-
 }
+

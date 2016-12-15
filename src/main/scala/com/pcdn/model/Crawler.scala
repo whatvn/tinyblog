@@ -24,6 +24,8 @@ object Crawler extends Settings {
   class Crawler extends Actor {
     override def preStart(): Unit = {
       Logger.logger ! Info("Github crawler started")
+      //https://api.github.com/repos/whatvn/whatvn.github.io/commits?path=about
+      bot.crawl("https://api.github.com/repos/%s/commits?path=about" format(githubRepo))
     }
 
     override def receive: Receive = {
