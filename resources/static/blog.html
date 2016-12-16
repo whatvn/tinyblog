@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Tiny Blog</title>
+    <title>~Hung</title>
     <style>
         a {
             text-decoration: none;
@@ -54,6 +54,20 @@
             padding: 30px;
             box-sizing: border-box;
         }
+
+        .highlight {
+            background-color: #ffffff;
+            color: #f66;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, .15);
+            box-sizing: border-box;
+            overflow: hidden;
+            position: relative;
+            font-family: 'Roboto', Helvetica, Arial, sans-serif;
+            font-size: 10px;
+            text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+            padding-left: 1em;
+        }
+
         .info {
             position: relative;
             margin: 65px auto 0;
@@ -79,19 +93,29 @@
 <script type="text/x-template" id="item-template">
     <ul>
         <header class="header">
-            <h1><a href="#" @click="backHome">home</a> / <a href="#/about" @click="showAbout">  about</a></h1>
+            <h1><a href="#" @click="update">home</a> / <a href="#/about" @click="update"> about</a></h1>
         </header>
-        <li v-if="record.items" v-for="i in record.items" @click="update(i.url)">
-            <a :href="'#' + i.url" class="commit">{{ i.title }}</a>
+        <li v-if="record.items" v-for="i in record.items">
+            <a :href="'#' + i.url" class="commit" @click="update">{{ i.title }}</a>
             - <span class="message">{{ i.desc | truncate }}</span><br>
             <!--remove comment next line to put your name here, i just hate my username so I hardcode my name instead-->
             <!--by <span class="author">{{ i.author }}</span>-->
             by <span class="author"> Hung Nguyen </span>
-            at <span class="date">{{ i.updateTime | formatDate }}</span>
+            at <span class="date">{{ i.updateTime | formatDate }}</span> <br>
+
+
         </li>
         <div v-if="record.date">
             <a href="#" rel="no-refresh" class="commit">{{ record.title }}</a>
-            - <span class="message">{{ record.desc }}</span><br>
+
+            - <span class="message">{{ record.desc }}</span>
+            <span v-if="record.tags" v-for="tag in record.tags" >
+
+                <a  :href="'#/tag/' + tag" class="highlight" @click="update">
+                    {{ tag }}
+                </a>
+            </span>
+            <br>
             <!--remove comment next line to put your name here, i just hate my username so I hardcode my name instead-->
             <!--<span class="author">Author: {{ record.author }}</span>-->
             <span class="author">Author: Hung Nguyen </span>

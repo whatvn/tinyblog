@@ -18,19 +18,10 @@ Vue.component('item', {
         }
     },
     methods: {
-        update: function (uri) {
-                window.location.hash = uri;
-                blog.fetchData();
-        },
-        backHome: function () {
-            window.location.hash = "#";
-            blog.fetchData();
-        },
-        showAbout: function () {
-            window.location.hash = "#/about";
+        update: function (obj) {
+            window.location.hash = obj.target.hash;
             blog.fetchData();
         }
-
     }
 });
 // boot up the blog
@@ -46,9 +37,8 @@ var blog = new Vue({
     methods: {
         fetchData: function () {
             var hash = window.location.hash;
-            console.log(hash);
             var apiLink = indexAPI;
-            if(hash.length > 2) {
+            if (hash.length > 2) {
                 apiLink = hash.slice(1); //remove "#"
             }
             var xhr = new XMLHttpRequest();
