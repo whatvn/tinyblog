@@ -1,5 +1,5 @@
 #tinyblog
-
+![](https://raw.githubusercontent.com/whatvn/tinyblog/master/img/blog.gif)
 A simple blog engine written in scala with akka-http, bootstrap and github as storage. The following technologies are used to build this blogging engine:
 
 - Akka-http as webserver and request routing
