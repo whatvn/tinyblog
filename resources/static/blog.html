@@ -39,7 +39,6 @@
             background-color: #fff;
             box-shadow: 0 2px 10px rgba(0, 0, 0, .15);
             overflow: hidden;
-            margin: 30px auto;
             position: relative;
             font-family: 'Roboto', Helvetica, Arial, sans-serif;
             color: #000;
@@ -51,7 +50,7 @@
             user-select: none;
             position: relative;
             z-index: 1;
-            margin-right: 70px;
+            margin: 30px 70px 30px auto;
             padding: 30px;
             box-sizing: border-box;
         }
@@ -80,10 +79,10 @@
 <script type="text/x-template" id="item-template">
     <ul>
         <header class="header">
-            <h1><a href="#" @click="backHome">home</a> / <a href="#" @click="showAbout">  about</a></h1>
+            <h1><a href="#" @click="backHome">home</a> / <a href="#/about" @click="showAbout">  about</a></h1>
         </header>
         <li v-if="record.items" v-for="i in record.items" @click="update(i.url)">
-            <a href="#" class="commit">{{ i.title }}</a>
+            <a :href="'#' + i.url" class="commit">{{ i.title }}</a>
             - <span class="message">{{ i.desc | truncate }}</span><br>
             <!--remove comment next line to put your name here, i just hate my username so I hardcode my name instead-->
             <!--by <span class="author">{{ i.author }}</span>-->
@@ -91,7 +90,7 @@
             at <span class="date">{{ i.updateTime | formatDate }}</span>
         </li>
         <div v-if="record.date">
-            <a href="#" class="commit">{{ record.title }}</a>
+            <a href="#" rel="no-refresh" class="commit">{{ record.title }}</a>
             - <span class="message">{{ record.desc }}</span><br>
             <!--remove comment next line to put your name here, i just hate my username so I hardcode my name instead-->
             <!--<span class="author">Author: {{ record.author }}</span>-->

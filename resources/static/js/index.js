@@ -1,9 +1,6 @@
 var indexAPI = '/indexapi';
 var rootURL = "http://" + window.location.host;
 
-console.log(rootURL)
-// window.onload = function () {
-
 var init = {};
 init.items = [];
 Vue.component('item', {
@@ -17,31 +14,21 @@ Vue.component('item', {
             return newline > 0 ? v.slice(0, newline) : v;
         },
         formatDate: function (v) {
-            console.log("Created: ", v);
             return v.replace(/T|Z/g, ' ');
         }
     },
     methods: {
         update: function (uri) {
-            var xhr = new XMLHttpRequest();
-            var self = this;
-            xhr.open('GET', rootURL + uri);
-            xhr.onload = function () {
-                blog.root = JSON.parse(xhr.responseText);
-            };
-            xhr.send();
+                window.location.hash = uri;
+                blog.fetchData();
         },
         backHome: function () {
+            window.location.hash = "#";
             blog.fetchData();
         },
         showAbout: function () {
-            var xhr = new XMLHttpRequest();
-            var self = this;
-            xhr.open('GET', rootURL + "/about");
-            xhr.onload = function () {
-                blog.root = JSON.parse(xhr.responseText);
-            };
-            xhr.send();
+            window.location.hash = "#/about";
+            blog.fetchData();
         }
 
     }
@@ -58,12 +45,17 @@ var blog = new Vue({
     },
     methods: {
         fetchData: function () {
+            var hash = window.location.hash;
+            console.log(hash);
+            var apiLink = indexAPI;
+            if(hash.length > 2) {
+                apiLink = hash.slice(1); //remove "#"
+            }
             var xhr = new XMLHttpRequest();
             var self = this;
-            xhr.open('GET', rootURL + indexAPI);
+            xhr.open('GET', rootURL + apiLink);
             xhr.onload = function () {
                 self.root = JSON.parse(xhr.responseText);
-                console.log(self.root.items[0].url);
             };
             xhr.send();
         }
