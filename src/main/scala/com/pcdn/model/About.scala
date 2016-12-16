@@ -23,7 +23,7 @@ object About extends Settings {
       val resource: BufferedSource = Source.fromFile(f)
       val about: String = Html(Markdown(5000).parseToHTML(resource.getLines drop(1) mkString  "\n")).toString
       resource.close
-      new About(about)
+      About(about)
     }
   }
 }

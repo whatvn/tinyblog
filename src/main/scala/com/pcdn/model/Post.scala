@@ -68,7 +68,7 @@ object Post extends Settings {
     Post(title.replace("TITLE:", ""), desc.replace("DESCRIPTION:", ""), content.toString, date, author, tags)
   }
 
-  def getPostDay(date: String) = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault).parse(date).toString
+  def getPostDay(date: String): String = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault).parse(date).toString
 
   def retrieveTagInfo(tagStr: String): List[BlogMetadata] = Tags.get(tagStr) match {
     case Some(p) =>
