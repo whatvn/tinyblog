@@ -36,6 +36,13 @@ var blog = new Vue({
     },
     methods: {
         fetchData: function () {
+            // function highlight() {
+            //     var codes = document.getElementsByTagName('pre');
+            //     console.log(codes.length);
+            //     for (var i = 0; i < codes.length; i++) {
+            //         hljs.highlightBlock(codes[i])
+            //     }
+            // }
             var hash = window.location.hash;
             var apiLink = indexAPI;
             if (hash.length > 2) {
@@ -46,8 +53,10 @@ var blog = new Vue({
             xhr.open('GET', rootURL + apiLink);
             xhr.onload = function () {
                 self.root = JSON.parse(xhr.responseText);
+                // setTimeout(highlight, 100);
             };
             xhr.send();
+            console.log("update stuff");
         }
     }
 });
