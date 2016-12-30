@@ -1,6 +1,6 @@
 a {
     text-decoration: none;
-    color: #f66;
+    color: #1c76ff;
 }
 
 li {
@@ -42,7 +42,7 @@ li {
 
 .highlight {
     background-color: rgb(229, 229, 229);
-    color: #f66;
+    color: #1c76ff;
     font-weight: bolder;
     overflow: hidden;
     position: relative;
