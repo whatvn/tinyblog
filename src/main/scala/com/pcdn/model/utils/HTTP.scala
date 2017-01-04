@@ -1,11 +1,12 @@
 package com.pcdn.model.utils
 
 import java.net.URL
+import java.util.concurrent.TimeUnit
 
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.Http.OutgoingConnection
-import akka.http.scaladsl.model.headers.Authorization
-import akka.http.scaladsl.model.{HttpMethods, HttpRequest, HttpResponse, headers}
+import akka.http.scaladsl.model.headers.{Authorization, Expires}
+import akka.http.scaladsl.model._
 import akka.stream.ActorMaterializer
 import akka.stream.scaladsl.{Flow, Sink, Source}
 import com.pcdn.model.TinyActor
@@ -16,6 +17,9 @@ import scala.concurrent.Future
 /**
   * Created by Hung on 8/19/16.
   */
+object HttpHeaders {
+  def expires = Expires(DateTime(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(2)))
+}
 
 object HttpClient {
 
