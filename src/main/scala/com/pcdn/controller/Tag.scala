@@ -20,9 +20,7 @@ trait Tag extends Directives with SprayJsonSupport {
         case Nil => redirect("/", StatusCodes.Found)
         //            case ms: List[BlogMetadata] => Producer.response(ContentTypes.`text/html(UTF-8)`, html.tag.render(ms).toString)
         case ms: List[BlogMetadata] => encodeResponse {
-          respondWithHeaders(HttpHeaders.expires) {
-            complete(metadataList(ms))
-          }
+          respondWithHeaders(HttpHeaders.expires)(complete(metadataList(ms)))
         }
       }
     }

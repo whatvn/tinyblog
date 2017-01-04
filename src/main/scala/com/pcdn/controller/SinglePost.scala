@@ -21,9 +21,7 @@ trait SinglePost extends Directives with SprayJsonSupport {
         Post.listPost(id.toString) match {
           //          case Some(p) => Producer.response(ContentTypes.`text/html(UTF-8)`, html.post.render(Post.buildPost(p)).toString)
           case Some(p) => encodeResponse {
-            respondWithHeaders(HttpHeaders.expires) {
-              complete(Post.buildPost(p))
-            }
+            respondWithHeaders(HttpHeaders.expires)(complete(Post.buildPost(p)))
           }
           case _ => complete("Not found")
         }

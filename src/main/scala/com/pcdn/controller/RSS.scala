@@ -11,11 +11,9 @@ import com.pcdn.model.utils.{HttpHeaders, Producer, Settings}
 trait RSS extends Settings with Directives {
   lazy val rss: Route = get {
     path("feed.xml") {
-      encodeResponse {
-        respondWithHeaders(HttpHeaders.expires) {
-          Producer.response(ContentTypes.`text/xml(UTF-8)`, xml.feed.render(Post.listPostFromDb(1), domainName).toString)
-        }
-      }
+      encodeResponse(respondWithHeaders(HttpHeaders.expires) {
+        Producer.response(ContentTypes.`text/xml(UTF-8)`, xml.feed.render(Post.listPostFromDb(1), domainName).toString)
+      })
     }
   }
 }

@@ -10,16 +10,10 @@ import com.pcdn.model.utils.Settings
   */
 trait StaticResource extends Settings {
   lazy val staticResources: Route =
-    get {
-      {
-        path("favicon.ico") {
-          getFromFile(s"$staticDir/img/favicon.ico")
-        } ~
-          pathPrefix("static" / RemainingPath) { path =>
-            encodeResponse {
-              getFromFile(s"$staticDir/%s" format path)
-            }
-          }
-      }
-    }
+    get({
+      path("favicon.ico")(getFromFile(s"$staticDir/img/favicon.ico")) ~
+        pathPrefix("static" / RemainingPath)(
+          path => encodeResponse(getFromFile(s"$staticDir/%s" format path))
+        )
+    })
 }
