@@ -7,6 +7,7 @@ import akka.http.scaladsl.unmarshalling.Unmarshal
 import akka.stream.ActorMaterializer
 import com.pcdn.model.Logger.logger
 import com.pcdn.model.Post._
+import com.pcdn.model.database.{BlogMetadata, CommitHistory, Tags}
 import com.pcdn.model.utils.HttpClient
 import com.pcdn.model.{Error, Info, TinyActor}
 
@@ -94,14 +95,14 @@ object GitHubBot {
           val url = s"/${filename.replaceAll(".md$", "")}"
           val bodyFuture: Future[String] = Unmarshal(r.entity).to[String]
           react(bodyFuture)(x => {
-            val title = getTitle(x)
+            val title = getTitle(x.split("\\n").head.trim)
             // untitled post will not get into db
-            if (title.trim.toLowerCase != "about" && title.trim.toLowerCase != "untitled"  ) {
-              val metadata = BlogMetadata(title, author, updateTime, getDesc(x), url)
+            if (title.trim.toLowerCase != "about" && title.trim.toLowerCase != "untitled") {
+              val metadata = BlogMetadata(title, author, updateTime, getDesc(x.split("\\n")(1).trim), url)
               BlogMetadata.put(filename, metadata)
             }
             fileWriter(abspath, x)
-            CommitHistory.update(filename, sha)
+            CommitHistory.put(filename, sha)
             getTags(x) match {
               case Some(s) => updateTags(s, filename)
               case _ => ()
@@ -137,7 +138,7 @@ object GitHubBot {
     }
 
     private def updateTags(ts: String, url: String) {
-      import tagsArray.StringToArray
+      import com.pcdn.model.database.tagsArray.StringToArray
       ts.split(",").foreach(x => {
         Tags.put(x.trim, url)
       })

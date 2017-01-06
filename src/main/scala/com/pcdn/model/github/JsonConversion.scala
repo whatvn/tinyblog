@@ -1,6 +1,7 @@
 package com.pcdn.model.github
 
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
+import com.pcdn.model.database.{BlogMetadata, metadataList}
 import com.pcdn.model.{About, Post}
 import spray.json.{DefaultJsonProtocol, RootJsonFormat}
 /**

@@ -15,6 +15,7 @@ import scala.language.postfixOps
 object Database extends Settings {
 
   import scala.concurrent.ExecutionContext.Implicits.global
+
   private val dbFile = new File("%s/%s/%s".format(dataDir, "db", "blog"))
   val dbDirectory: Boolean = new File("%s/%s".format(dataDir, "db")).mkdir()
   val db = DBMaker.fileDB(dbFile)
@@ -22,7 +23,7 @@ object Database extends Settings {
     .checksumStoreEnable()
     .fileMmapEnable().make()
   val commitActor: ActorRef = TinyActor.getSystem().actorOf(Props(new DBCommitter(db)), name = "dbcommiter")
-  private val commitService = TinyActor.getSystem().scheduler.schedule(2 seconds, 60 seconds, commitActor, "commit")
+  TinyActor.getSystem().scheduler.schedule(2 seconds, 60 seconds, commitActor, "commit")
 
   private class DBCommitter(database: DB) extends Actor {
     override def receive = {

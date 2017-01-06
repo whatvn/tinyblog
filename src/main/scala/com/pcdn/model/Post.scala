@@ -6,7 +6,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 import akka.http.scaladsl.model.DateTime
-import com.pcdn.model.github.{BlogMetadata, Tags}
+import com.pcdn.model.database.{BlogMetadata, Tags}
 import com.pcdn.model.utils.{Markdown, Settings}
 import play.twirl.api.Html
 
@@ -17,9 +17,9 @@ import scala.language.postfixOps
   * Created by Hung on 8/16/16.
   */
 object Post extends Settings {
-  private final val TITLE_REGEX = "(TITLE\\:)(.*)".r
-  private final val DESC_REGEX = "(DESCRIPTION\\:)(.*)".r
-  private final val TAGS_REGEX = "(TAGS\\:)(.*)".r
+  private final val TITLE_REGEX = "(TITLE:)(.*)".r
+  private final val DESC_REGEX = "(DESCRIPTION:)(.*)".r
+  private final val TAGS_REGEX = "(TAGS:)(.*)".r
 
   def listPost(id: String): Option[File] = {
     new File(dataDir + "/_posts").listFiles.find({
@@ -29,7 +29,7 @@ object Post extends Settings {
 
   def listPostFromDb(page: Int): List[BlogMetadata] = {
     // newest updated post will be on the top
-    BlogMetadata.listAll().sortWith(_.updateTime > _.updateTime)
+    BlogMetadata.getAll.sortWith(_.updateTime > _.updateTime)
   }
 
   def getTitle(input: String): String = input match {

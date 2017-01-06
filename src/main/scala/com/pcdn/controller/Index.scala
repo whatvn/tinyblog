@@ -3,7 +3,7 @@ package com.pcdn.controller
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import akka.http.scaladsl.server.{Directives, Route}
 import com.pcdn.model.Post
-import com.pcdn.model.github.metadataList
+import com.pcdn.model.database.metadataList
 import com.pcdn.model.utils.{HttpHeaders, Settings}
 
 /**
