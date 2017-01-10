@@ -11,7 +11,7 @@ import com.pcdn.model.utils.{HttpHeaders, Settings}
   */
 trait Index extends Directives with SprayJsonSupport with Settings {
 
-  import com.pcdn.model.github.JsonConversion.{blogMetadataFormat, listBlogMetadatFormat}
+  import com.pcdn.model.github.JsonConversion.{blogMetadataFormat, listBlogMetadataFormat}
 
   lazy val indexPage: Route = get {
     pathEndOrSingleSlash {

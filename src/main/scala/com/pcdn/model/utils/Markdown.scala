@@ -8,7 +8,7 @@ import org.pegdown.{Extensions, PegDownProcessor}
   */
 
 case class Markdown(maxParsingTime: Long = 2000) {
-  val pegDown = new PegDownProcessor(Extensions.NONE |
+  private val pegDown = new PegDownProcessor(Extensions.NONE |
     Extensions.DEFINITIONS |
     Extensions.TABLES |
     Extensions.FENCED_CODE_BLOCKS, maxParsingTime)

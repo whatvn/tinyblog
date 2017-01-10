@@ -18,8 +18,8 @@ import scala.util.{Failure, Success}
 
 object GitHubBot {
 
-  implicit val system = TinyActor.getSystem()
-  implicit val materialize = ActorMaterializer()
+  implicit private val system = TinyActor.getSystem()
+  implicit private val materialize = ActorMaterializer()
 
   import com.pcdn.model.github.JsonConversion._
   import system.dispatcher
@@ -29,7 +29,7 @@ object GitHubBot {
     bot.crawl()
   }
 
-  def apply(username: String, token: String, repo: String) = {
+  def apply(username: String, token: String, repo: String): GitHubBot = {
     new GitHubBot(username, token, repo)
   }
 
@@ -84,7 +84,7 @@ object GitHubBot {
       f.delete //no matter it's exist or not
       new PrintWriter(path) {
         write(content)
-        close
+        close()
       }
     }
 
@@ -144,5 +144,4 @@ object GitHubBot {
       })
     }
   }
-
 }

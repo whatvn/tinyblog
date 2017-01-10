@@ -8,10 +8,10 @@ import com.pcdn.model.utils.Hash
 abstract class DatabaseBrowser[T] extends Hash {
 
 
-   val databaseEngine: Database[T]
+  val databaseEngine: Database[T]
 
 
-  def get(k: String):Option[T] = databaseEngine.get(toHexString(k)) match {
+  def get(k: String): Option[T] = databaseEngine.get(toHexString(k)) match {
     case null => None
     case x => Some(x)
   }
@@ -33,7 +33,7 @@ abstract class DatabaseBrowser[T] extends Hash {
 
   def size: Long = databaseEngine.size
 
-  def remove(k: String): Unit = databaseEngine.remove(k)
+  def remove(k: String): Unit = databaseEngine.remove(toHexString(k))
 
   def clear: Unit = databaseEngine.drop
 }

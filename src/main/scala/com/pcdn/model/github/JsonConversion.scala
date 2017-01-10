@@ -15,7 +15,7 @@ object JsonConversion extends DefaultJsonProtocol with SprayJsonSupport  {
   implicit val fileDetailToJson: RootJsonFormat[fileDetail] = jsonFormat10(fileDetail)
   implicit val filesToJson: RootJsonFormat[files] = jsonFormat(files, "sha", "commit", "files")
   implicit val blogMetadataFormat: RootJsonFormat[BlogMetadata] = jsonFormat5(BlogMetadata.apply)
-  implicit val listBlogMetadatFormat: RootJsonFormat[metadataList] = jsonFormat1(metadataList)
+  implicit val listBlogMetadataFormat: RootJsonFormat[metadataList] = jsonFormat1(metadataList)
   implicit val postFormat: RootJsonFormat[Post] = jsonFormat6(Post.apply)
   implicit val aboutFormat: RootJsonFormat[About] = jsonFormat1(About.apply)
 }

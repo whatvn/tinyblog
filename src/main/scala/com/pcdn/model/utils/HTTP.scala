@@ -18,6 +18,7 @@ import scala.concurrent.Future
   * Created by Hung on 8/19/16.
   */
 object HttpHeaders {
+  // 2 days
   def expires = Expires(DateTime(System.currentTimeMillis() + TimeUnit.DAYS.toMillis(2)))
 }
 
@@ -27,12 +28,12 @@ object HttpClient {
 
   class HttpClient(val user: String, val token: String) {
 
-    val authorization = List(Authorization(headers.BasicHttpCredentials(user, token)))
-    implicit val system = TinyActor.getSystem()
-    implicit val materialize = ActorMaterializer()
+    private val authorization = List(Authorization(headers.BasicHttpCredentials(user, token)))
+    implicit private val system = TinyActor.getSystem()
+    implicit private val materialize = ActorMaterializer()
 
 
-    def process(url: String)(op: HttpResponse => Unit) = {
+    def process(url: String)(op: HttpResponse => Unit): Unit = {
       val fullUrl = new URL(url)
       val host = fullUrl.getHost
       val path = fullUrl.getFile
