@@ -29,7 +29,7 @@ object Post extends Settings {
 
   def listPostFromDb(page: Int): List[BlogMetadata] = {
     // newest updated post will be on the top
-    BlogMetadata.getAll.sortWith(_.updateTime > _.updateTime)
+    BlogMetadata.allMetadata.sortWith(_.updateTime > _.updateTime)
   }
 
   def getTitle(input: String): String = input match {
@@ -57,7 +57,7 @@ object Post extends Settings {
     }.replace("TAGS:", "").split(",").map(_.trim).filter(_ != "").toList
     var (date, author) = (DateTime.now.toIsoDateString, "Anonymous")
     val content: Html = Html(Markdown(5000).parseToHTML(src mkString "\n"))
-    BlogMetadata.get("_posts/" + f.getName) match {
+    BlogMetadata.getMetadata("_posts/" + f.getName) match {
       case Some(x) =>
         date = getPostDay(x.updateTime)
         author = x.author
@@ -71,7 +71,7 @@ object Post extends Settings {
 
   def retrieveTagInfo(tagStr: String): List[BlogMetadata] = Tags.get(tagStr) match {
     case Some(p) =>
-      p.map(BlogMetadata.get).filter(_.isDefined).map {
+      p.map(BlogMetadata.getMetadata).filter(_.isDefined).map {
         case Some(m) => m
       }.toList
     case _ => Nil

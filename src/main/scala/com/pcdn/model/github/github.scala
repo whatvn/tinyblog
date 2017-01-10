@@ -95,15 +95,16 @@ object GitHubBot {
           val url = s"/${filename.replaceAll(".md$", "")}"
           val bodyFuture: Future[String] = Unmarshal(r.entity).to[String]
           react(bodyFuture)(x => {
-            val title = getTitle(x.split("\\n").head.trim)
+            val lines = x.split("\\n")
+            val title = getTitle(lines.head.trim)
             // untitled post will not get into db
             if (title.trim.toLowerCase != "about" && title.trim.toLowerCase != "untitled") {
-              val metadata = BlogMetadata(title, author, updateTime, getDesc(x.split("\\n")(1).trim), url)
-              BlogMetadata.put(filename, metadata)
+              val metadata = BlogMetadata(title, author, updateTime, getDesc(lines(1).trim), url)
+              BlogMetadata.putMetadata(filename, metadata)
             }
             fileWriter(abspath, x)
-            CommitHistory.put(filename, sha)
-            getTags(x) match {
+            CommitHistory.update(filename, sha)
+            getTags(lines(2).trim) match {
               case Some(s) => updateTags(s, filename)
               case _ => ()
             }
@@ -138,9 +139,8 @@ object GitHubBot {
     }
 
     private def updateTags(ts: String, url: String) {
-      import com.pcdn.model.database.tagsArray.StringToArray
       ts.split(",").foreach(x => {
-        Tags.put(x.trim, url)
+        Tags.update(x.trim, url)
       })
     }
   }

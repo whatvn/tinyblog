@@ -25,6 +25,8 @@ abstract class Database[T] {
   def replace(k: String, v: T): Unit
 
   def remove(k: String): Unit
+
+  def drop: Unit
 }
 
 object MapDB {
@@ -51,6 +53,8 @@ object MapDB {
     override def put(k: String, v: T): Unit = engine.put(k, v)
 
     override def replace(k: String, v: T): Unit = engine.replace(k, v)
+
+    override def drop: Unit = engine.clear()
   }
 
 }

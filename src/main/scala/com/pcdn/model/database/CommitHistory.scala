@@ -1,6 +1,5 @@
 package com.pcdn.model.database
 
-import com.pcdn.model.utils.Hash
 import org.mapdb.serializer.SerializerLongArray
 
 import scala.language.implicitConversions
@@ -9,35 +8,24 @@ import scala.language.implicitConversions
   * Created by Hung on 9/14/16.
   */
 
-object CommitHistory extends Hash {
+object CommitHistory extends DatabaseBrowser[Array[Long]] {
 
   private val commitHistory: Database[Array[Long]] = MapDB[Array[Long], SerializerLongArray]("commitHistory", new SerializerLongArray)
 
-  def put(k: String, v: String): Unit = {
-    val vArray = Array(toLong(k))
-    val hexKey = toHexString(v)
+  override val databaseEngine: Database[Array[Long]] = commitHistory
+
+
+  def update(k: String, v: String): Unit = {
+    val vArray = Array(toLong(v))
     isSet(k) match {
       case true =>
         get(k) match {
-          case None => commitHistory.put(k, vArray)
-          case Some(ov) => commitHistory.replace(k, vArray ++ ov)
+          case None => put(k, vArray)
+          case Some(ov) => replace(k, vArray ++ ov)
         }
-      case _ => commitHistory.put(hexKey, vArray)
+      case _ => put(k, vArray)
     }
   }
-
-  def isSet(fileId: String): Boolean = commitHistory.isSet(toHexString(fileId))
-
-  def get(fileId: String): Option[Array[Long]] = commitHistory.get(toHexString(fileId)) match {
-    case null => None
-    case x => Some(x)
-  }
-
-  def remove(fileId: String) = commitHistory.remove(toHexString(fileId))
-
-  def getAll: List[String] = commitHistory.getAll
-
-  def size: Long = commitHistory.size
 
   def isProcessed(fileId: String, sha: String): Boolean = get(fileId) match {
     case None => false
